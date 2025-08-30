@@ -209,57 +209,7 @@ class AdminSystem {
     }
   }
 
-  getModalContent(sectionKey) {
-    switch (sectionKey) {
-      case "title":
-        return `
-          <div class="modal-header">
-            <h3>標題設定</h3>
-            <button class="modal-close">×</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>主標題</label>
-              <input type="text" id="title-input" value="${this.settings.title}" placeholder="輸入主標題">
-            </div>
-            <div class="form-group">
-              <label>副標題</label>
-              <input type="text" id="subtitle-input" value="${this.settings.subtitle}" placeholder="輸入副標題">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="save-btn" data-action="save-title">儲存</button>
-          </div>
-        `;
-
-      case "dateCountdown":
-        const dateFrom = this.settings.dateCountdown?.from || this.settings.dateFrom || "2025-03-15T11:30";
-        const dateTo = this.settings.dateCountdown?.to || this.settings.dateTo || "2025-03-16T15:00";
-        
-        return `
-          <div class="modal-header">
-            <h3>倒數計時設定</h3>
-            <button class="modal-close">×</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>開始時間</label>
-              <input type="datetime-local" id="date-from" value="${dateFrom}">
-            </div>
-            <div class="form-group">
-              <label>結束時間</label>
-              <input type="datetime-local" id="date-to" value="${dateTo}">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="save-btn" data-action="save-dates">儲存</button>
-          </div>
-        `;
-
-      case "schedule":
-        return `
-          <div class="modal-header">
-            <h3>行程設定</h3>
+>行程設定</h3>
             <button class="modal-close">×</button>
           </div>
           <div class="modal-body">
