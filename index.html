@@ -100,22 +100,7 @@
 
     <script type="module" src="js/firebase-config.js"></script>
     <script src="js/room-manager.js"></script>
-    <script type="module" src="script.js"></script>
+    <script type="module" src="js/index-main.js"></script>
     <script src="js/countdown.js"></script>
-    
-    <script>
-      // 新增：管理按鈕點擊事件
-      document.addEventListener('DOMContentLoaded', function() {
-        const adminBtn = document.getElementById('admin-btn');
-        if (adminBtn) {
-          adminBtn.addEventListener('click', function() {
-            // 生成房間ID（如果沒有的話）
-            const roomId = 'demo-room-' + Date.now();
-            // 跳轉到管理頁面
-            window.location.href = `admin.html?room=${roomId}`;
-          });
-        }
-      });
-    </script>
   </body>
 </html>
