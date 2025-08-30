@@ -1,21 +1,21 @@
-// js/admin.js - 完整管理後台系統 (基於 Camping2025)
+// js/admin.js - 完整修正版管理後台系統（按設計圖實作）
 
 class AdminSystem {
   constructor() {
     this.roomId = this.getRoomIdFromURL();
     this.firebaseReady = false;
-    this.currentMiddleSection = 'packingList'; // 當前中間面板顯示的內容
+    this.currentSection = 'packingList'; // 預設顯示 Packing list
     
     // 設定資料結構
     this.settings = {
       title: "Trip",
       subtitle: "2025",
-      googleMapLinks: [], // 支援多個地圖連結
+      googleMapLinks: [],
       dateCountdown: {
-        from: this.getDefaultDate(), // 預設當天
-        to: this.getDefaultDate()    // 預設當天 
+        from: this.getDefaultDate(),
+        to: this.getDefaultDate()
       },
-      schedule: [], // 支援多天行程
+      schedule: [],
       packingItems: {
         "shared-items": [],
         "personal-items": []
@@ -45,8 +45,8 @@ class AdminSystem {
   init() {
     console.log('🚀 管理系統初始化中...');
     this.bindEvents();
+    this.updateMiddlePanel(); // 顯示預設的 packing list
     this.updatePreview();
-    this.updateMiddleContent();
     this.waitForFirebase();
   }
 
@@ -80,7 +80,7 @@ class AdminSystem {
           console.log('📥 從 Firebase 載入設定:', data);
           this.settings = { ...this.settings, ...data };
           this.updatePreview();
-          this.updateMiddleContent();
+          this.updateMiddlePanel();
           this.showNotification('Settings loaded');
         }
       });
@@ -150,19 +150,8 @@ class AdminSystem {
       // Section 點擊 - 切換中間面板內容
       if (e.target.matches(".section-item") || e.target.closest(".section-item")) {
         const section = e.target.dataset.section || e.target.closest(".section-item").dataset.section;
-        
-        // 如果是 packingList，直接切換中間面板，不開 modal
-        if (section === 'packingList') {
-          this.currentMiddleSection = 'packingList';
-          this.updateMiddleContent();
-        } else {
-          // 其他功能開啟編輯 modal
-          this.openSectionModal(section);
-        }
-      }
-
-      if (e.target.matches(".modal-overlay") || e.target.matches(".modal-close")) {
-        this.closeModal();
+        this.currentSection = section;
+        this.updateMiddlePanel();
       }
     });
 
@@ -173,9 +162,6 @@ class AdminSystem {
         this.saveToFirebase();
       });
     }
-
-    // 設置 Packing List 的事件處理
-    this.setupPackingListEvents();
   }
 
   switchTab(tabName) {
@@ -190,38 +176,144 @@ class AdminSystem {
   }
 
   // ================================
-  // 中間面板內容管理
+  // 中間面板內容管理（核心功能）
   // ================================
 
-  updateMiddleContent() {
+  updateMiddlePanel() {
     const middleContainer = document.getElementById('admin-middle');
     if (!middleContainer) return;
 
-    switch(this.currentMiddleSection) {
+    switch(this.currentSection) {
+      case 'title':
+        middleContainer.innerHTML = this.renderTitleEditor();
+        this.setupTitleEvents();
+        break;
+        
+      case 'googleMap':
+        middleContainer.innerHTML = this.renderGoogleMapEditor();
+        this.setupGoogleMapEvents();
+        break;
+        
+      case 'countdown':
+        middleContainer.innerHTML = this.renderCountdownEditor();
+        this.setupCountdownEvents();
+        break;
+        
+      case 'schedule':
+        middleContainer.innerHTML = this.renderScheduleEditor();
+        this.setupScheduleEvents();
+        break;
+        
       case 'packingList':
-        middleContainer.innerHTML = this.renderPackingListContent();
+      default:
+        middleContainer.innerHTML = this.renderPackingListEditor();
         this.setupPackingListEvents();
         this.renderPackingItems();
         this.updatePersonTags();
-        break;
-      
-      default:
-        middleContainer.innerHTML = this.renderDefaultMiddleContent();
     }
   }
 
-  renderPackingListContent() {
+  // ================================
+  // 各個編輯器的 HTML 渲染
+  // ================================
+
+  renderTitleEditor() {
     return `
-      <div class="middle-content" id="middle-packaging">
+      <div class="middle-content">
+        <div class="middle-header">
+          <h2 class="middle-title">Title</h2>
+        </div>
+        
+        <div class="form-section">
+          <div class="form-row">
+            <label>Title</label>
+            <input type="text" class="form-input" id="title-input" value="${this.settings.title}" placeholder="Enter Title">
+          </div>
+          <div class="form-row">
+            <label>Subtitle</label>
+            <input type="text" class="form-input" id="subtitle-input" value="${this.settings.subtitle}" placeholder="Enter Subtitle">
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  renderGoogleMapEditor() {
+    return `
+      <div class="middle-content">
+        <div class="middle-header">
+          <h2 class="middle-title">Google Map Link</h2>
+          <button class="add-link-btn" id="add-map-link">+</button>
+        </div>
+        
+        <div class="form-section" id="map-links-container">
+          ${this.settings.googleMapLinks.map((link, index) => `
+            <div class="map-link-row" data-index="${index}">
+              <div class="form-row">
+                <input type="text" class="form-input" value="${link.destination || ''}" data-field="destination" placeholder="Destination">
+              </div>
+              <div class="form-row">
+                <input type="text" class="form-input" value="${link.url || ''}" data-field="url" placeholder="https://maps.google.com/...">
+              </div>
+              <button class="remove-link-btn" data-index="${index}">×</button>
+            </div>
+          `).join('')}
+          ${this.settings.googleMapLinks.length === 0 ? '<div class="empty-state">No links added yet</div>' : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  renderCountdownEditor() {
+    return `
+      <div class="middle-content">
+        <div class="middle-header">
+          <h2 class="middle-title">Date Countdown</h2>
+        </div>
+        
+        <div class="form-section">
+          <div class="form-row">
+            <label>From</label>
+            <input type="datetime-local" class="form-input" id="date-from" value="${this.settings.dateCountdown?.from || this.getDefaultDate()}">
+          </div>
+          <div class="form-row">
+            <label>To</label>
+            <input type="datetime-local" class="form-input" id="date-to" value="${this.settings.dateCountdown?.to || this.getDefaultDate()}">
+          </div>
+          <p style="font-size: 12px; color: #666; margin-top: 8px;">預設為當天行程</p>
+        </div>
+      </div>
+    `;
+  }
+
+  renderScheduleEditor() {
+    return `
+      <div class="middle-content">
+        <div class="middle-header">
+          <h2 class="middle-title">Schedule</h2>
+          <button class="add-day-btn" id="add-day">+ Day</button>
+        </div>
+        
+        <div class="form-section" id="schedule-container">
+          ${this.renderScheduleDays()}
+        </div>
+      </div>
+    `;
+  }
+
+  renderPackingListEditor() {
+    return `
+      <div class="middle-content">
         <div class="middle-header">
           <h2 class="middle-title">Packaging list</h2>
         </div>
         
-        <!-- 人員標籤 -->
+        <!-- 人員標籤區（在最上方） -->
         <div class="person-tags-section" id="person-tags">
           <div class="person-tag active" data-person="All">All</div>
         </div>
         
+        <!-- 新增工具區 -->
         <div class="form-section">
           <div class="form-row">
             <select class="form-select" id="category-select">
@@ -242,7 +334,7 @@ class AdminSystem {
           <button class="add-btn" id="add-unified-item">Add Item</button>
         </div>
 
-        <!-- 物品清單顯示區域 -->
+        <!-- 物品清單顯示區域（分類標題永遠顯示） -->
         <div class="items-display-section">
           <div class="category-section">
             <h4>Shared Gear</h4>
@@ -258,22 +350,178 @@ class AdminSystem {
     `;
   }
 
-  renderDefaultMiddleContent() {
-    return `
-      <div class="middle-content">
-        <div class="middle-header">
-          <h2 class="middle-title">Settings</h2>
+  renderScheduleDays() {
+    if (!this.settings.schedule || this.settings.schedule.length === 0) {
+      return '<div class="empty-state">No schedule yet</div>';
+    }
+
+    return this.settings.schedule.map((day, dayIndex) => `
+      <div class="schedule-day" data-day-index="${dayIndex}">
+        <div class="day-header">
+          <h4>Day${dayIndex + 1}</h4>
+          <button class="remove-day-btn" data-day-index="${dayIndex}">×</button>
         </div>
-        <p style="text-align: center; color: #666; padding: 40px 20px;">
-          Select an item from the left panel to edit
-        </p>
+        <div class="day-activities">
+          ${day.activities ? day.activities.map((activity, actIndex) => `
+            <div class="schedule-row" data-day-index="${dayIndex}" data-activity-index="${actIndex}">
+              <input type="time" class="form-input" value="${activity.time}" data-field="time">
+              <input type="text" class="form-input" value="${activity.activity}" data-field="activity" placeholder="Activity">
+              <button class="remove-activity-btn" data-day-index="${dayIndex}" data-activity-index="${actIndex}">×</button>
+            </div>
+          `).join('') : ''}
+          <button class="add-activity-btn" data-day-index="${dayIndex}">+ Activity</button>
+        </div>
       </div>
-    `;
+    `).join('');
   }
 
   // ================================
-  // Packing List 功能 (基於 Camping2025)
+  // 各編輯器的事件處理
   // ================================
+
+  setupTitleEvents() {
+    const titleInput = document.getElementById('title-input');
+    const subtitleInput = document.getElementById('subtitle-input');
+    
+    if (titleInput) {
+      titleInput.addEventListener('input', (e) => {
+        this.settings.title = e.target.value;
+        this.updatePreview();
+      });
+    }
+    
+    if (subtitleInput) {
+      subtitleInput.addEventListener('input', (e) => {
+        this.settings.subtitle = e.target.value;
+        this.updatePreview();
+      });
+    }
+  }
+
+  setupGoogleMapEvents() {
+    const container = document.getElementById('map-links-container');
+    
+    // 新增連結
+    const addBtn = document.getElementById('add-map-link');
+    if (addBtn) {
+      addBtn.addEventListener('click', () => {
+        this.settings.googleMapLinks.push({ destination: '', url: '' });
+        this.updateMiddlePanel();
+        this.updatePreview();
+      });
+    }
+    
+    // 輸入監聽
+    if (container) {
+      container.addEventListener('input', (e) => {
+        if (e.target.closest('.map-link-row')) {
+          const row = e.target.closest('.map-link-row');
+          const index = parseInt(row.dataset.index);
+          const field = e.target.dataset.field;
+          
+          if (this.settings.googleMapLinks[index]) {
+            this.settings.googleMapLinks[index][field] = e.target.value;
+            this.updatePreview();
+          }
+        }
+      });
+      
+      // 刪除按鈕
+      container.addEventListener('click', (e) => {
+        if (e.target.matches('.remove-link-btn')) {
+          const index = parseInt(e.target.dataset.index);
+          this.settings.googleMapLinks.splice(index, 1);
+          this.updateMiddlePanel();
+          this.updatePreview();
+        }
+      });
+    }
+  }
+
+  setupCountdownEvents() {
+    const dateFromInput = document.getElementById('date-from');
+    const dateToInput = document.getElementById('date-to');
+    
+    if (dateFromInput) {
+      dateFromInput.addEventListener('change', (e) => {
+        if (!this.settings.dateCountdown) this.settings.dateCountdown = {};
+        this.settings.dateCountdown.from = e.target.value;
+        this.updatePreview();
+      });
+    }
+    
+    if (dateToInput) {
+      dateToInput.addEventListener('change', (e) => {
+        if (!this.settings.dateCountdown) this.settings.dateCountdown = {};
+        this.settings.dateCountdown.to = e.target.value;
+        this.updatePreview();
+      });
+    }
+  }
+
+  setupScheduleEvents() {
+    const container = document.getElementById('schedule-container');
+    
+    // 新增天數
+    const addDayBtn = document.getElementById('add-day');
+    if (addDayBtn) {
+      addDayBtn.addEventListener('click', () => {
+        this.settings.schedule.push({
+          day: `Day${this.settings.schedule.length + 1}`,
+          activities: []
+        });
+        this.updateMiddlePanel();
+        this.updatePreview();
+      });
+    }
+    
+    if (container) {
+      container.addEventListener('click', (e) => {
+        // 刪除天數
+        if (e.target.matches('.remove-day-btn')) {
+          const dayIndex = parseInt(e.target.dataset.dayIndex);
+          this.settings.schedule.splice(dayIndex, 1);
+          this.updateMiddlePanel();
+          this.updatePreview();
+        }
+        
+        // 新增活動
+        if (e.target.matches('.add-activity-btn')) {
+          const dayIndex = parseInt(e.target.dataset.dayIndex);
+          if (!this.settings.schedule[dayIndex].activities) {
+            this.settings.schedule[dayIndex].activities = [];
+          }
+          this.settings.schedule[dayIndex].activities.push({ time: '10:00', activity: 'New Activity' });
+          this.updateMiddlePanel();
+          this.updatePreview();
+        }
+        
+        // 刪除活動
+        if (e.target.matches('.remove-activity-btn')) {
+          const dayIndex = parseInt(e.target.dataset.dayIndex);
+          const actIndex = parseInt(e.target.dataset.activityIndex);
+          this.settings.schedule[dayIndex].activities.splice(actIndex, 1);
+          this.updateMiddlePanel();
+          this.updatePreview();
+        }
+      });
+      
+      // 活動輸入
+      container.addEventListener('input', (e) => {
+        if (e.target.closest('.schedule-row')) {
+          const row = e.target.closest('.schedule-row');
+          const dayIndex = parseInt(row.dataset.dayIndex);
+          const actIndex = parseInt(row.dataset.activityIndex);
+          const field = e.target.dataset.field;
+          
+          if (this.settings.schedule[dayIndex] && this.settings.schedule[dayIndex].activities[actIndex]) {
+            this.settings.schedule[dayIndex].activities[actIndex][field] = e.target.value;
+            this.updatePreview();
+          }
+        }
+      });
+    }
+  }
 
   setupPackingListEvents() {
     // 添加物品按鈕
@@ -286,7 +534,7 @@ class AdminSystem {
     }
 
     // Enter 鍵支援
-    const inputs = document.querySelectorAll('#middle-packaging input[type="text"]');
+    const inputs = document.querySelectorAll('.form-input');
     inputs.forEach((input) => {
       input.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
@@ -295,7 +543,7 @@ class AdminSystem {
       });
     });
 
-    // 人員標籤點擊
+    // 人員標籤點擊和刪除物品
     document.addEventListener('click', (e) => {
       if (e.target.matches('.person-tag')) {
         document.querySelectorAll('.person-tag').forEach(tag => tag.classList.remove('active'));
@@ -303,12 +551,15 @@ class AdminSystem {
         this.filterPackingItems(e.target.dataset.person);
       }
 
-      // 刪除物品按鈕
       if (e.target.matches('.item-delete-btn')) {
         this.deletePackingItem(e.target);
       }
     });
   }
+
+  // ================================
+  // Packing List 功能實作
+  // ================================
 
   addPackingItem() {
     const categorySelect = document.getElementById("category-select");
@@ -338,7 +589,6 @@ class AdminSystem {
       personData: persons || "All",
     };
 
-    // 添加到設定中 (新的在前面)
     if (!this.settings.packingItems[categoryId]) {
       this.settings.packingItems[categoryId] = [];
     }
@@ -368,10 +618,8 @@ class AdminSystem {
     const itemId = itemElement.dataset.itemId;
     const category = itemElement.dataset.category;
 
-    // 從設定中移除
     this.settings.packingItems[category] = this.settings.packingItems[category].filter(item => item.id !== itemId);
 
-    // 重新渲染
     this.renderPackingItems();
     this.updatePersonTags();
     this.updatePreview();
@@ -383,21 +631,18 @@ class AdminSystem {
     
     if (!sharedDisplay || !personalDisplay) return;
 
-    // 渲染 Shared Gear
     if (this.settings.packingItems["shared-items"]) {
       sharedDisplay.innerHTML = this.settings.packingItems["shared-items"]
         .map(item => this.createPackingItemHTML(item, "shared-items"))
         .join('');
     }
 
-    // 渲染 Personal Gear  
     if (this.settings.packingItems["personal-items"]) {
       personalDisplay.innerHTML = this.settings.packingItems["personal-items"]
         .map(item => this.createPackingItemHTML(item, "personal-items"))
         .join('');
     }
 
-    // 應用目前的篩選
     const activePerson = document.querySelector('.person-tag.active')?.dataset.person || 'All';
     this.filterPackingItems(activePerson);
   }
@@ -437,7 +682,6 @@ class AdminSystem {
     const personTagsContainer = document.getElementById('person-tags');
     if (!personTagsContainer) return;
 
-    // 收集所有人員
     this.allPersons.clear();
     this.allPersons.add('All');
 
@@ -452,7 +696,6 @@ class AdminSystem {
       }
     });
 
-    // 只有當有其他人員時才顯示標籤
     if (this.allPersons.size <= 1) {
       personTagsContainer.style.display = 'none';
       return;
@@ -466,306 +709,6 @@ class AdminSystem {
       .map(person => 
         `<div class="person-tag ${person === currentActive ? 'active' : ''}" data-person="${person}">${person}</div>`
       ).join('');
-  }
-
-  // ================================
-  // Modal 編輯功能
-  // ================================
-
-  openSectionModal(sectionKey) {
-    const modal = document.getElementById("modal-overlay");
-    const content = document.getElementById("modal-content");
-
-    if (modal && content) {
-      content.innerHTML = this.getModalContent(sectionKey);
-      modal.style.display = "flex";
-      this.bindModalEvents(sectionKey);
-    }
-  }
-
-  closeModal() {
-    const modal = document.getElementById("modal-overlay");
-    if (modal) {
-      modal.style.display = "none";
-    }
-  }
-
-  getModalContent(sectionKey) {
-    switch (sectionKey) {
-      case "title":
-        return `
-          <div class="modal-header">
-            <h3>Title Settings</h3>
-            <button class="modal-close">×</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>Title</label>
-              <input type="text" id="title-input" value="${this.settings.title}" placeholder="Enter Title">
-            </div>
-            <div class="form-group">
-              <label>Subtitle</label>
-              <input type="text" id="subtitle-input" value="${this.settings.subtitle}" placeholder="Enter Subtitle">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="save-btn" data-action="save-title">Save</button>
-          </div>
-        `;
-
-      case "googleMap":
-        return `
-          <div class="modal-header">
-            <h3>Google Map Link</h3>
-            <button class="modal-close">×</button>
-            <button class="add-link-btn" data-action="add-map-link">+</button>
-          </div>
-          <div class="modal-body">
-            <div id="map-links-list">
-              ${this.settings.googleMapLinks.map((link, index) => `
-                <div class="map-link-row" data-index="${index}">
-                  <input type="text" value="${link.destination || ''}" data-field="destination" placeholder="Destination">
-                  <input type="text" value="${link.url || ''}" data-field="url" placeholder="https://maps.google.com/...">
-                  <button class="remove-link-btn" data-index="${index}">×</button>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="save-btn" data-action="save-map-links">Save</button>
-          </div>
-        `;
-
-      case "countdown":
-        return `
-          <div class="modal-header">
-            <h3>Date Countdown</h3>
-            <button class="modal-close">×</button>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>From</label>
-              <input type="datetime-local" id="date-from" value="${this.settings.dateCountdown?.from || this.getDefaultDate()}">
-            </div>
-            <div class="form-group">
-              <label>To</label>
-              <input type="datetime-local" id="date-to" value="${this.settings.dateCountdown?.to || this.getDefaultDate()}">
-            </div>
-            <p style="font-size: 12px; color: #666; margin-top: 8px;">預設為當天行程</p>
-          </div>
-          <div class="modal-footer">
-            <button class="save-btn" data-action="save-dates">Save</button>
-          </div>
-        `;
-
-      case "schedule":
-        return `
-          <div class="modal-header">
-            <h3>Schedule</h3>
-            <button class="modal-close">×</button>
-            <button class="add-day-btn" data-action="add-day">+ Day</button>
-          </div>
-          <div class="modal-body">
-            <div id="schedule-days-list">
-              ${this.renderScheduleDays()}
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="save-btn" data-action="save-schedule">Save</button>
-          </div>
-        `;
-
-      default:
-        return `
-          <div class="modal-header">
-            <h3>${sectionKey}</h3>
-            <button class="modal-close">×</button>
-          </div>
-          <div class="modal-body">
-            <p style="color: #666; text-align: center; padding: 20px;">Feature coming soon...</p>
-          </div>
-        `;
-    }
-  }
-
-  renderScheduleDays() {
-    if (!this.settings.schedule || this.settings.schedule.length === 0) {
-      return '<div class="empty-schedule">No schedule yet</div>';
-    }
-
-    return this.settings.schedule.map((day, dayIndex) => `
-      <div class="schedule-day" data-day-index="${dayIndex}">
-        <div class="day-header">
-          <h4>Day${dayIndex + 1}</h4>
-          <button class="remove-day-btn" data-day-index="${dayIndex}">×</button>
-        </div>
-        <div class="day-activities">
-          ${day.activities ? day.activities.map((activity, actIndex) => `
-            <div class="schedule-row" data-day-index="${dayIndex}" data-activity-index="${actIndex}">
-              <input type="time" value="${activity.time}" data-field="time">
-              <input type="text" value="${activity.activity}" data-field="activity" placeholder="Activity">
-              <button class="remove-activity-btn" data-day-index="${dayIndex}" data-activity-index="${actIndex}">×</button>
-            </div>
-          `).join('') : ''}
-          <button class="add-activity-btn" data-day-index="${dayIndex}">+ Activity</button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  bindModalEvents(sectionKey) {
-    const modal = document.getElementById("modal-content");
-    if (!modal) return;
-
-    modal.addEventListener("click", (e) => {
-      const action = e.target.dataset.action;
-      
-      switch(action) {
-        case "save-title":
-          this.saveTitleSettings();
-          break;
-        case "save-map-links":
-          this.saveMapSettings();
-          break;
-        case "add-map-link":
-          this.addMapLink();
-          break;
-        case "save-dates":
-          this.saveDateSettings();
-          break;
-        case "save-schedule":
-          this.saveScheduleSettings();
-          break;
-        case "add-day":
-          this.addScheduleDay();
-          break;
-      }
-
-      // Google Map Links 移除按鈕
-      if (e.target.matches('.remove-link-btn')) {
-        const index = parseInt(e.target.dataset.index);
-        this.settings.googleMapLinks.splice(index, 1);
-        modal.innerHTML = this.getModalContent(sectionKey);
-        this.bindModalEvents(sectionKey);
-      }
-
-      // Schedule 相關按鈕
-      if (e.target.matches('.remove-day-btn')) {
-        const dayIndex = parseInt(e.target.dataset.dayIndex);
-        this.settings.schedule.splice(dayIndex, 1);
-        modal.innerHTML = this.getModalContent(sectionKey);
-        this.bindModalEvents(sectionKey);
-      }
-
-      if (e.target.matches('.add-activity-btn')) {
-        const dayIndex = parseInt(e.target.dataset.dayIndex);
-        if (!this.settings.schedule[dayIndex].activities) {
-          this.settings.schedule[dayIndex].activities = [];
-        }
-        this.settings.schedule[dayIndex].activities.push({ time: '10:00', activity: 'New Activity' });
-        modal.innerHTML = this.getModalContent(sectionKey);
-        this.bindModalEvents(sectionKey);
-      }
-
-      if (e.target.matches('.remove-activity-btn')) {
-        const dayIndex = parseInt(e.target.dataset.dayIndex);
-        const actIndex = parseInt(e.target.dataset.activityIndex);
-        this.settings.schedule[dayIndex].activities.splice(actIndex, 1);
-        modal.innerHTML = this.getModalContent(sectionKey);
-        this.bindModalEvents(sectionKey);
-      }
-    });
-
-    // 輸入監聽
-    modal.addEventListener("input", (e) => {
-      // Google Map Links 輸入
-      if (e.target.closest('.map-link-row')) {
-        const row = e.target.closest('.map-link-row');
-        const index = parseInt(row.dataset.index);
-        const field = e.target.dataset.field;
-        
-        if (this.settings.googleMapLinks[index]) {
-          this.settings.googleMapLinks[index][field] = e.target.value;
-        }
-      }
-
-      // Schedule 輸入
-      if (e.target.closest('.schedule-row')) {
-        const row = e.target.closest('.schedule-row');
-        const dayIndex = parseInt(row.dataset.dayIndex);
-        const actIndex = parseInt(row.dataset.activityIndex);
-        const field = e.target.dataset.field;
-        
-        if (this.settings.schedule[dayIndex] && this.settings.schedule[dayIndex].activities[actIndex]) {
-          this.settings.schedule[dayIndex].activities[actIndex][field] = e.target.value;
-        }
-      }
-    });
-  }
-
-  // ================================
-  // 各功能的儲存方法
-  // ================================
-
-  saveTitleSettings() {
-    const titleInput = document.getElementById("title-input");
-    const subtitleInput = document.getElementById("subtitle-input");
-    
-    if (titleInput && subtitleInput) {
-      this.settings.title = titleInput.value;
-      this.settings.subtitle = subtitleInput.value;
-      
-      this.updatePreview();
-      this.closeModal();
-      this.showNotification('Title updated');
-    }
-  }
-
-  saveMapSettings() {
-    // Google Map Links 已經通過 input 事件即時更新
-    this.updatePreview();
-    this.closeModal();
-    this.showNotification('Google Map links updated');
-  }
-
-  addMapLink() {
-    this.settings.googleMapLinks.push({ destination: '', url: '' });
-    const modal = document.getElementById("modal-content");
-    modal.innerHTML = this.getModalContent('googleMap');
-    this.bindModalEvents('googleMap');
-  }
-
-  saveDateSettings() {
-    const dateFromInput = document.getElementById("date-from");
-    const dateToInput = document.getElementById("date-to");
-    
-    if (dateFromInput && dateToInput) {
-      this.settings.dateCountdown = {
-        from: dateFromInput.value,
-        to: dateToInput.value
-      };
-      
-      this.updatePreview();
-      this.closeModal();
-      this.showNotification('Date countdown updated');
-    }
-  }
-
-  saveScheduleSettings() {
-    // Schedule 已經通過 input 事件即時更新
-    this.updatePreview();
-    this.closeModal();
-    this.showNotification('Schedule updated');
-  }
-
-  addScheduleDay() {
-    this.settings.schedule.push({
-      day: `Day${this.settings.schedule.length + 1}`,
-      activities: []
-    });
-    const modal = document.getElementById("modal-content");
-    modal.innerHTML = this.getModalContent('schedule');
-    this.bindModalEvents('schedule');
   }
 
   // ================================
@@ -890,63 +833,157 @@ class AdminSystem {
   }
 
   // ================================
-  // 分享連結功能
+  // 分享連結功能（修正版）
   // ================================
 
   showShareModal() {
-    const modal = document.getElementById("modal-overlay");
-    const content = document.getElementById("modal-content");
+    // 創建彈窗 overlay
+    let modalOverlay = document.getElementById('share-modal-overlay');
+    if (!modalOverlay) {
+      modalOverlay = document.createElement('div');
+      modalOverlay.id = 'share-modal-overlay';
+      modalOverlay.className = 'modal-overlay';
+      modalOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+      `;
+      document.body.appendChild(modalOverlay);
+    }
     
-    if (modal && content) {
-      const baseUrl = window.location.origin;
-      const adminLink = `${baseUrl}/admin.html?room=${this.roomId}`;
-      const shareLink = `${baseUrl}/index.html?room=${this.roomId}`;
-      
-      content.innerHTML = `
-        <div class="share-modal-content">
-          <div class="share-header">
-            <h3>Links</h3>
-            <button class="modal-close">×</button>
-          </div>
-          <div class="share-body">
-            <div class="share-link-section">
-              <label>Admin link</label>
-              <div class="share-link-row">
-                <input type="text" value="${adminLink}" readonly onclick="this.select()">
-                <button class="copy-link-btn" data-link="${adminLink}">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M8 5H6C4.9 5 4 5.9 4 7v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2M8 5c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2M8 5h8v4l-1-1-1 1V5z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                </button>
-              </div>
+    const baseUrl = window.location.origin + window.location.pathname.replace('/admin.html', '');
+    const adminLink = `${baseUrl}/admin.html?room=${this.roomId}`;
+    const shareLink = `${baseUrl}/index.html?room=${this.roomId}`;
+    
+    modalOverlay.innerHTML = `
+      <div class="share-modal-content" style="
+        background: white;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 500px;
+        overflow: hidden;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      ">
+        <div class="share-header" style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 24px 32px 16px;
+          border-bottom: 1px solid #f0f0f0;
+        ">
+          <h3 style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin: 0;">Links</h3>
+          <button class="modal-close" style="
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+          ">×</button>
+        </div>
+        <div class="share-body" style="padding: 24px 32px;">
+          <div class="share-link-section" style="margin-bottom: 24px;">
+            <label style="
+              display: block;
+              font-size: 14px;
+              font-weight: 500;
+              color: #1a1a1a;
+              margin-bottom: 8px;
+            ">Admin link</label>
+            <div class="share-link-row" style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" value="${adminLink}" readonly onclick="this.select()" style="
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid #e5e5e5;
+                border-radius: 8px;
+                font-size: 14px;
+                background: #f8f9fa;
+                color: #666;
+              ">
+              <button class="copy-link-btn" data-link="${adminLink}" style="
+                background: #1a1a1a;
+                color: white;
+                border: none;
+                width: 44px;
+                height: 44px;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
+              ">
+                📋
+              </button>
             </div>
-            
-            <div class="share-link-section">
-              <label>Share link</label>
-              <div class="share-link-row">
-                <input type="text" value="${shareLink}" readonly onclick="this.select()">
-                <button class="copy-link-btn" data-link="${shareLink}">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M8 5H6C4.9 5 4 5.9 4 7v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2M8 5c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2M8 5h8v4l-1-1-1 1V5z" stroke="currentColor" stroke-width="2"/>
-                  </svg>
-                </button>
-              </div>
+          </div>
+          
+          <div class="share-link-section">
+            <label style="
+              display: block;
+              font-size: 14px;
+              font-weight: 500;
+              color: #1a1a1a;
+              margin-bottom: 8px;
+            ">Share link</label>
+            <div class="share-link-row" style="display: flex; gap: 8px; align-items: center;">
+              <input type="text" value="${shareLink}" readonly onclick="this.select()" style="
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid #e5e5e5;
+                border-radius: 8px;
+                font-size: 14px;
+                background: #f8f9fa;
+                color: #666;
+              ">
+              <button class="copy-link-btn" data-link="${shareLink}" style="
+                background: #1a1a1a;
+                color: white;
+                border: none;
+                width: 44px;
+                height: 44px;
+                border-radius: 8px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
+              ">
+                📋
+              </button>
             </div>
           </div>
         </div>
-      `;
+      </div>
+    `;
+    
+    modalOverlay.style.display = 'flex';
+    
+    // 綁定事件
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay || e.target.matches('.modal-close')) {
+        modalOverlay.style.display = 'none';
+      }
       
-      modal.style.display = 'flex';
-      
-      // 綁定複製按鈕事件
-      content.addEventListener('click', (e) => {
-        if (e.target.matches('.copy-link-btn') || e.target.closest('.copy-link-btn')) {
-          const btn = e.target.matches('.copy-link-btn') ? e.target : e.target.closest('.copy-link-btn');
-          const link = btn.dataset.link;
-          this.copyToClipboard(link);
-        }
-      });
-    }
+      if (e.target.matches('.copy-link-btn')) {
+        const link = e.target.dataset.link;
+        this.copyToClipboard(link);
+      }
+    });
   }
 
   copyToClipboard(text) {
