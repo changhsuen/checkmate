@@ -23,14 +23,14 @@
                 <strong>用戶連結</strong><br>
                 <small>給團隊成員使用</small>
               </div>
-              <button class="copy-btn" onclick="copyUserLink()">複製</button>
+              <button class="copy-btn" id="copy-user-link">複製</button>
             </div>
             <div class="link-item">
               <div class="link-info">
                 <strong>管理連結</strong><br>
                 <small>編輯後台</small>
               </div>
-              <button class="copy-btn" onclick="copyAdminLink()">複製</button>
+              <button class="copy-btn" id="copy-admin-link">複製</button>
             </div>
           </div>
           
@@ -153,6 +153,10 @@
 
         // 發布按鈕
         document.getElementById('publish-btn').addEventListener('click', publishChanges);
+        
+        // 複製連結按鈕
+        document.getElementById('copy-user-link').addEventListener('click', copyUserLink);
+        document.getElementById('copy-admin-link').addEventListener('click', copyAdminLink);
       }
 
       function openModal(section) {
@@ -341,17 +345,90 @@
       }
 
       function copyUserLink() {
-        const userLink = `${window.location.origin}?room=${roomId}`;
-        navigator.clipboard.writeText(userLink).then(() => {
-          showNotification('用戶連結已複製');
-        });
+        const baseUrl = window.location.origin;
+        const pathName = window.location.pathname.replace('/admin.html', '');
+        const userLink = `${baseUrl}${pathName}?room=${roomId}`;
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(userLink).then(() => {
+            showNotification('用戶連結已複製到剪貼板');
+          }).catch(err => {
+            fallbackCopyTextToClipboard(userLink, '用戶連結已複製');
+          });
+        } else {
+          fallbackCopyTextToClipboard(userLink, '用戶連結已複製');
+        }
       }
 
       function copyAdminLink() {
-        const adminLink = `${window.location.origin}/admin.html?room=${roomId}`;
-        navigator.clipboard.writeText(adminLink).then(() => {
-          showNotification('管理連結已複製');
-        });
+        const baseUrl = window.location.origin;
+        const pathName = window.location.pathname;
+        let adminLink;
+        
+        if (pathName.includes('admin.html')) {
+          adminLink = `${baseUrl}${pathName}?room=${roomId}`;
+        } else {
+          adminLink = `${baseUrl}/admin.html?room=${roomId}`;
+        }
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(adminLink).then(() => {
+            showNotification('管理連結已複製到剪貼板');
+          }).catch(err => {
+            fallbackCopyTextToClipboard(adminLink, '管理連結已複製');
+          });
+        } else {
+          fallbackCopyTextToClipboard(adminLink, '管理連結已複製');
+        }
+      }
+
+      function fallbackCopyTextToClipboard(text, successMessage) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+        
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+          const successful = document.execCommand('copy');
+          if (successful) {
+            showNotification(successMessage);
+          } else {
+            showLinkInModal(text, '請手動複製此連結');
+          }
+        } catch (err) {
+          console.error('複製失敗:', err);
+          showLinkInModal(text, '請手動複製此連結');
+        }
+        
+        document.body.removeChild(textArea);
+      }
+
+      function showLinkInModal(link, title) {
+        const modal = document.getElementById('modal-overlay');
+        const content = document.getElementById('modal-content');
+        
+        content.innerHTML = `
+          <div class="modal-header">
+            <h3>${title}</h3>
+            <button class="modal-close">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>連結:</label>
+              <input type="text" value="${link}" readonly onclick="this.select()" style="width: 100%; padding: 10px; margin-top: 5px;">
+            </div>
+            <p style="font-size: 14px; color: #666; margin-top: 10px;">
+              請選取上方文字框中的連結並複製 (Ctrl+C 或 Cmd+C)
+            </p>
+          </div>
+        `;
+        
+        modal.style.display = 'flex';
       }
 
       function showNotification(message) {
@@ -367,6 +444,8 @@
           padding: 12px 20px;
           border-radius: 8px;
           z-index: 1000;
+          font-size: 14px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         `;
         document.body.appendChild(notification);
         
