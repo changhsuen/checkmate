@@ -1,147 +1,147 @@
 /* ================================
-   管理後台完整樣式 - 修復版
+   現代化管理後台樣式
    ================================ */
 
-/* 基本佈局 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ================================
+   主容器佈局
+   ================================ */
+
 .admin-container {
   display: flex;
   min-height: 100vh;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  gap: 24px;
+  padding: 24px;
 }
+
+/* ================================
+   左側邊欄
+   ================================ */
 
 .admin-sidebar {
-  width: 350px;
-  background: #f8f9fa;
-  padding: 24px;
-  border-right: 1px solid #e9ecef;
-  overflow-y: auto;
-}
-
-.admin-preview {
-  flex: 1;
-  padding: 24px;
+  width: 320px;
   background: #ffffff;
-  overflow-y: auto;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  height: fit-content;
 }
 
-/* 頭部區域 */
+/* 頭部 */
 .admin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #e9ecef;
 }
 
 .admin-header h1 {
-  margin: 0;
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
-  color: #333;
+  color: #1a1a1a;
 }
 
 .publish-btn {
-  background: #28a745;
+  background: #1a1a1a;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 24px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .publish-btn:hover {
-  background: #218838;
+  background: #333;
+  transform: translateY(-1px);
 }
 
-.publish-btn:active {
-  transform: translateY(1px);
-}
-
-/* 分享連結區域 */
-.links-section {
-  margin-bottom: 2rem;
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.links-section h3 {
-  margin: 0 0 1rem 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
-}
-
-.link-item {
+/* Tab 切換器 */
+.tab-switcher {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0.75rem 0;
-  padding: 1rem;
   background: #f8f9fa;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  padding: 4px;
+  margin-bottom: 24px;
 }
 
-.link-info strong {
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  cursor: pointer;
   font-size: 14px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 500;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #1a1a1a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tab-btn:hover:not(.active) {
+  color: #1a1a1a;
+}
+
+/* Tab 內容區 */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
   display: block;
 }
 
-.link-info small {
-  color: #6c757d;
-  font-size: 12px;
-}
+/* ================================
+   Section 列表
+   ================================ */
 
-.copy-btn {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: background 0.2s;
-}
-
-.copy-btn:hover {
-  background: #0056b3;
-}
-
-/* 區塊列表 */
 .section-list {
-  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .section-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  margin: 8px 0;
-  background: white;
+  padding: 16px 20px;
+  background: #f8f9fa;
   border-radius: 10px;
   cursor: pointer;
-  border: 1px solid #e9ecef;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 2px solid transparent;
 }
 
 .section-item:hover {
-  background: #f8f9fa;
-  border-color: #007bff;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+  background: #e9ecef;
+  border-color: #dee2e6;
+}
+
+.section-item:active {
+  transform: translateY(1px);
 }
 
 .section-info {
@@ -150,21 +150,16 @@
   gap: 12px;
 }
 
-.section-icon {
-  font-size: 22px;
-  width: 30px;
-  text-align: center;
-}
-
 .section-name {
-  font-weight: 500;
   font-size: 15px;
-  color: #333;
+  font-weight: 500;
+  color: #1a1a1a;
 }
 
 .section-toggle {
+  color: #666;
   font-size: 18px;
-  opacity: 0.6;
+  opacity: 0.7;
   transition: opacity 0.2s;
 }
 
@@ -172,27 +167,138 @@
   opacity: 1;
 }
 
-/* 預覽區域 */
-.admin-preview h2 {
-  margin: 0 0 24px 0;
-  font-size: 24px;
+/* ================================
+   中間區域 - Packing list
+   ================================ */
+
+.admin-middle {
+  flex: 1;
+  max-width: 400px;
+  background: #e5e5e5;
+  border-radius: 12px;
+  padding: 24px;
+  height: fit-content;
+}
+
+.middle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.middle-title {
+  font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: #1a1a1a;
+}
+
+/* 表單區域 */
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-row {
+  margin-bottom: 16px;
+}
+
+.form-row-horizontal {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-select {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #f8f9fa;
+  color: #1a1a1a;
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+.form-select:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.form-input {
+  padding: 14px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #f8f9fa;
+  color: #1a1a1a;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+}
+
+.form-input.item-input {
+  flex: 1;
+}
+
+.form-input.number-input {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.add-btn {
+  width: 100%;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.add-btn:hover {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+/* ================================
+   右側預覽區域
+   ================================ */
+
+.admin-preview {
+  flex: 1;
+  max-width: 400px;
 }
 
 .preview-phone {
-  width: 375px;
-  margin: 0 auto;
-  background: white;
+  background: #ffffff;
   border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-  border: 8px solid #333;
-  position: relative;
-  min-height: 700px;
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e5e5e5;
+  max-width: 375px;
+  margin: 0 auto;
 }
 
-/* 預覽內容 */
+/* 預覽頭部 */
 .preview-header {
   text-align: center;
   margin-bottom: 24px;
@@ -200,66 +306,71 @@
 
 .preview-header h1 {
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 800;
+  color: #1a1a1a;
   margin: 0;
-  color: #333;
+  line-height: 1;
 }
 
 .preview-header div {
   font-size: 36px;
+  font-weight: 800;
   color: #666;
-  font-weight: 700;
+  line-height: 1;
 }
 
+/* 倒數計時卡片 */
 .preview-countdown {
   background: #b4a587;
-  padding: 20px;
-  border-radius: 20px;
-  text-align: center;
-  margin: 20px 0;
   color: white;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  margin: 24px 0;
 }
 
 .countdown-date {
   font-size: 16px;
-  margin-bottom: 16px;
   font-weight: 500;
+  margin-bottom: 20px;
+  opacity: 0.9;
 }
 
 .countdown-numbers {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: 8px;
 }
 
 .countdown-item {
-  text-align: center;
   flex: 1;
+  text-align: center;
 }
 
 .countdown-item .number {
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 36px;
+  font-weight: 700;
   line-height: 1;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .countdown-item .label {
   font-size: 12px;
-  color: rgba(255,255,255,0.8);
   font-weight: 500;
+  opacity: 0.8;
 }
 
-.preview-schedule, .preview-packing {
-  margin: 20px 0;
-  padding: 20px;
+/* Schedule 區域 */
+.preview-schedule {
   background: #929b8f;
-  border-radius: 20px;
   color: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin: 16px 0;
 }
 
-.preview-schedule h3, .preview-packing h3 {
-  font-size: 20px;
+.preview-schedule h3 {
+  font-size: 18px;
   font-weight: 600;
   margin: 0 0 16px 0;
 }
@@ -282,50 +393,84 @@
   font-size: 14px;
 }
 
-.empty-state {
-  color: rgba(255,255,255,0.7);
-  font-style: italic;
-  text-align: center;
-  padding: 20px 0;
+/* Packing list 區域 */
+.preview-packing {
+  margin-top: 16px;
 }
 
-/* 彈出視窗樣式 */
+.preview-packing h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+}
+
+.preview-packing-content {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  color: #666;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Empty states */
+.empty-state {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 14px;
+}
+
+.preview-packing .empty-state {
+  color: #666;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* ================================
+   Modal 樣式
+   ================================ */
+
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   width: 90%;
-  max-width: 500px;
+  max-width: 540px;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e9ecef;
+  padding: 24px 32px 16px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .modal-header h3 {
-  margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #333;
+  color: #1a1a1a;
+  margin: 0;
 }
 
 .modal-close {
@@ -334,40 +479,45 @@
   font-size: 24px;
   cursor: pointer;
   color: #666;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: background 0.2s;
+  border-radius: 8px;
+  transition: all 0.2s;
 }
 
 .modal-close:hover {
-  background: #f8f9fa;
+  background: #f5f5f5;
+  color: #1a1a1a;
 }
 
 .modal-body {
-  padding: 24px;
+  padding: 24px 32px;
 }
 
 .modal-footer {
-  padding: 16px 24px;
-  border-top: 1px solid #e9ecef;
+  padding: 16px 32px 24px;
+  border-top: 1px solid #f0f0f0;
   display: flex;
   justify-content: flex-end;
 }
 
-/* 表單樣式 */
+/* 表單群組 */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
 }
 
 .form-group label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #333;
+  color: #1a1a1a;
   font-size: 14px;
 }
 
@@ -375,34 +525,34 @@
 .form-group input[type="datetime-local"] {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e9ecef;
+  border: 2px solid #e5e5e5;
   border-radius: 8px;
   font-size: 14px;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
   box-sizing: border-box;
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
 }
 
-/* 行程設定專用樣式 */
+/* Schedule 特殊樣式 */
 .schedule-row {
   display: flex;
   gap: 12px;
   align-items: center;
   margin-bottom: 12px;
-  padding: 12px;
+  padding: 16px;
   background: #f8f9fa;
   border-radius: 8px;
 }
 
 .schedule-row input[type="time"] {
-  width: 120px;
+  width: 140px;
   padding: 8px 12px;
-  border: 2px solid #e9ecef;
+  border: 2px solid #e5e5e5;
   border-radius: 6px;
   font-size: 14px;
 }
@@ -410,38 +560,39 @@
 .schedule-row input[type="text"] {
   flex: 1;
   padding: 8px 12px;
-  border: 2px solid #e9ecef;
+  border: 2px solid #e5e5e5;
   border-radius: 6px;
   font-size: 14px;
 }
 
 .schedule-row input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #4299e1;
 }
 
 .remove-btn {
-  background: #dc3545;
+  background: #ef4444;
   color: white;
   border: none;
   width: 32px;
   height: 32px;
-  border-radius: 50%;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
 .remove-btn:hover {
-  background: #c82333;
+  background: #dc2626;
 }
 
 .add-schedule-btn {
-  background: #28a745;
+  background: #10b981;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -451,16 +602,16 @@
   font-weight: 500;
   width: 100%;
   margin-top: 16px;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .add-schedule-btn:hover {
-  background: #218838;
+  background: #059669;
 }
 
 /* 儲存按鈕 */
 .save-btn {
-  background: #007bff;
+  background: #1a1a1a;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -468,88 +619,154 @@
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .save-btn:hover {
-  background: #0056b3;
+  background: #333;
+  transform: translateY(-1px);
 }
 
-/* 通知樣式 */
+/* ================================
+   分享連結區域
+   ================================ */
+
+.links-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.links-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.link-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+
+.link-info strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  display: block;
+}
+
+.link-info small {
+  color: #666;
+  font-size: 12px;
+}
+
+.copy-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  background: #2563eb;
+}
+
+/* ================================
+   通知系統
+   ================================ */
+
 .notification {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #28a745;
+  background: #10b981;
   color: white;
   padding: 16px 24px;
-  border-radius: 8px;
+  border-radius: 12px;
   z-index: 1001;
   font-size: 14px;
   font-weight: 500;
-  box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
-  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 380px;
+  backdrop-filter: blur(8px);
 }
 
-/* 響應式設計 */
-@media (max-width: 768px) {
+/* ================================
+   響應式設計
+   ================================ */
+
+@media (max-width: 1200px) {
   .admin-container {
     flex-direction: column;
+    gap: 16px;
   }
   
-  .admin-sidebar {
+  .admin-sidebar,
+  .admin-middle {
     width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #e9ecef;
+    max-width: none;
+  }
+  
+  .admin-preview {
+    max-width: none;
   }
   
   .preview-phone {
-    width: 100%;
-    max-width: 375px;
-  }
-  
-  .modal-content {
-    width: 95%;
-    margin: 20px;
+    max-width: 100%;
   }
 }
 
-@media (max-width: 480px) {
-  .admin-header {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 16px;
   }
   
-  .admin-header h1 {
-    text-align: center;
+  .admin-sidebar,
+  .modal-content {
+    padding: 16px;
   }
   
-  .links-section {
-    padding: 1rem;
-  }
-  
-  .link-item {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-  
-  .copy-btn {
-    width: 100%;
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding-left: 16px;
+    padding-right: 16px;
   }
   
   .countdown-numbers {
-    gap: 8px;
+    gap: 4px;
   }
   
   .countdown-item .number {
-    font-size: 24px;
+    font-size: 28px;
+  }
+  
+  .form-row-horizontal {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-input.number-input {
+    width: 100%;
   }
   
   .schedule-row {
     flex-direction: column;
-    gap: 8px;
+    align-items: stretch;
   }
   
   .schedule-row input[type="time"] {
