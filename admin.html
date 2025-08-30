@@ -58,7 +58,7 @@
                 
                 <div class="section-item" data-section="packingList">
                   <div class="section-info">
-                    <span class="section-name">Packaging list</span>
+                    <span class="section-name">Packing list</span>
                   </div>
                   <span class="section-toggle">👁️</span>
                 </div>
@@ -74,51 +74,16 @@
           </div>
         </div>
         
-        <!-- 中間區域 - 內容會根據左側選擇的項目動態變化 -->
+        <!-- 中間區域 - 編輯面板（動態內容） -->
         <div class="admin-middle" id="admin-middle">
-          <!-- 預設顯示 Packaging list -->
-          <div class="middle-content" id="middle-packaging">
+          <!-- 初始內容 - 會被 JavaScript 動態替換 -->
+          <div class="middle-content">
             <div class="middle-header">
-              <h2 class="middle-title">Packaging list</h2>
+              <h2 class="middle-title">Select a section</h2>
             </div>
-            
-            <!-- 人員標籤 -->
-            <div class="person-tags-section" id="person-tags">
-              <div class="person-tag active" data-person="All">All</div>
-            </div>
-            
-            <div class="form-section">
-              <div class="form-row">
-                <select class="form-select" id="category-select">
-                  <option value="Personal Gear">Personal Gear</option>
-                  <option value="Shared Gear">Shared Gear</option>
-                </select>
-              </div>
-              
-              <div class="form-row-horizontal">
-                <input type="text" class="form-input item-input" id="new-item-name" placeholder="Item" />
-                <input type="text" class="form-input number-input" id="new-item-quantity" placeholder="Number" />
-              </div>
-              
-              <div class="form-row">
-                <input type="text" class="form-input" id="new-item-person" placeholder="Name, Name, Name" />
-              </div>
-              
-              <button class="add-btn" id="add-unified-item">Add Item</button>
-            </div>
-
-            <!-- 物品清單顯示區域 -->
-            <div class="items-display-section">
-              <div class="category-section">
-                <h4>Shared Gear</h4>
-                <div class="items-list" id="shared-items-display"></div>
-              </div>
-              
-              <div class="category-section">
-                <h4>Personal Gear</h4>
-                <div class="items-list" id="personal-items-display"></div>
-              </div>
-            </div>
+            <p style="text-align: center; color: #666; padding: 40px 20px;">
+              Click on a section from the left panel to start editing
+            </p>
           </div>
         </div>
         
@@ -178,11 +143,6 @@
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Modal 彈出視窗 -->
-      <div class="modal-overlay" id="modal-overlay" style="display: none;">
-        <div class="modal-content" id="modal-content"></div>
       </div>
     </div>
 
