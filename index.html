@@ -13,37 +13,12 @@
   </head>
   <body>
     <div class="container">
-      <!-- 房間選擇界面 -->
-      <div class="room-selection" id="room-selection" style="display: none">
-        <h1>Checkmate</h1>
-        <p>選擇一個選項開始：</p>
-
-        <button class="room-btn" id="create-room-btn">
-          <span class="btn-icon">🎯</span>
-          <div>
-            <div class="btn-title">建立新活動</div>
-            <div class="btn-desc">設定你的出遊活動</div>
-          </div>
-        </button>
-
-        <div class="join-section">
-          <input type="text" placeholder="輸入房間 ID 或貼上連結" id="room-input" />
-          <button class="room-btn" id="join-room-btn">
-            <span class="btn-icon">🚪</span>
-            <div>
-              <div class="btn-title">加入活動</div>
-              <div class="btn-desc">使用邀請連結參與</div>
-            </div>
-          </button>
-        </div>
-      </div>
-
       <!-- 主要內容 -->
       <div class="main-content" id="main-content">
         <header class="header">
           <h1 class="title">Trip</h1>
           <div class="year">2025</div>
-          <button class="admin-btn" id="admin-btn" style="display: none">⚙️</button>
+          <button class="admin-btn" id="admin-btn" style="display: block;">⚙️</button>
         </header>
 
         <div class="quick-links">
@@ -127,5 +102,20 @@
     <script src="js/room-manager.js"></script>
     <script type="module" src="script.js"></script>
     <script src="js/countdown.js"></script>
+    
+    <script>
+      // 新增：管理按鈕點擊事件
+      document.addEventListener('DOMContentLoaded', function() {
+        const adminBtn = document.getElementById('admin-btn');
+        if (adminBtn) {
+          adminBtn.addEventListener('click', function() {
+            // 生成房間ID（如果沒有的話）
+            const roomId = 'demo-room-' + Date.now();
+            // 跳轉到管理頁面
+            window.location.href = `admin.html?room=${roomId}`;
+          });
+        }
+      });
+    </script>
   </body>
 </html>
