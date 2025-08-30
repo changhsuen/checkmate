@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+  /* Colors */
+  --white: #ffffff;
+  --black: #000000;
+  --grey10: #f4f4f4;
+  --grey20: #e0e0e0;
+  --grey30: #c6c6c6;
+  --grey40: #a8a8a8;
+  --grey50: #8d8d8d;
+  --grey60: #6f6f6f;
+  --grey70: #525252;
+  --grey80: #424242;
+  --grey90: #262626;
+  --grey100: #161616;
+
+  --green10: #d2d9d2;
+  --green20: #c2cac2;
+  --green30: #b2bab1;
+  --green40: #a1aba0;
+  --green50: #929b8f;
+  --green60: #808a7d;
+  --green70: #6e796a;
+  --green80: #5c6757;
+  --green90: #4a5443;
+  --green100: #37402f;
+
+  --beige50: #b4a587;
+
+  --hover-grey10: #e8e8e8;
+  --hover-grey20: #d1d1d1;
+  --hover-grey30: #b5b5b5;
+  --hover-grey40: #999999;
+  --hover-grey50: #7a7a7a;
+  --hover-grey60: #5e5e5e;
+  --hover-grey70: #636363;
+  --hover-grey80: #474747;
+  --hover-grey90: #333333;
+  --hover-grey100: #292929;
+
+  /* Theme */
+  --background: var(--grey10);
+  --background-hover: color-mix(in srgb, var(--grey50) 16%, transparent);
+
+  /* 文字顏色 */
+  --text-primary: var(--grey100);
+  --text-secondary: color-mix(in srgb, var(--grey100) 60%, transparent);
+  --text-on-color: var(--white);
+  --text-on-color-secondary: color-mix(in srgb, var(--white) 70%, transparent);
+  --text-placeholder: var(--grey50);
+
+  /* 背景層級 */
+  --layer-01: var(--grey20);
+  --layer-02: var(--grey30);
+  --layer-03: var(--grey40);
+
+  --layer-02-hover: var(--hover-grey30);
+
+  /* 按鈕顏色 */
+  --button-primary: var(--grey100);
+  --button-primary-hover: var(--grey90);
+
+  /* 邊框顏色 */
+  --border-subtle: color-mix(in srgb, var(--grey100) 10%, transparent);
+  --border-interactive: #10b981;
+  --border-secondary: #d1d5db;
+
+  /* 圖標顏色 */
+  --icon-primary: var(--green100);
+  --icon-secondary: color-mix(in srgb, var(--grey100) 60%, transparent);
+  --icon-on-color: var(--white);
+
+  /* 輸入欄位 */
+  --field: var(--grey10);
+
+  /*狀態 */
+  --status-red: #da1e28;
+  --status-yellow: #f1c21b;
+  --status-green: #24a148;
+
+  /* Typography - 使用系統字體 */
+  --font-tc: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-en: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Spacing */
+  --spacing-01: 0.125rem; /* 2px */
+  --spacing-02: 0.25rem; /* 4px */
+  --spacing-03: 0.5rem; /* 8px */
+  --spacing-04: 0.75rem; /* 12px */
+  --spacing-05: 1rem; /* 16px */
+  --spacing-06: 1.5rem; /* 24px */
+  --spacing-07: 2rem; /* 32px */
+  --spacing-08: 2.5rem; /* 40px */
+  --spacing-09: 3rem; /* 48px */
+  --spacing-10: 4rem; /* 64px */
+  --spacing-11: 5rem; /* 80px */
+  --spacing-12: 6rem; /* 96px */
+
+  /* radius */
+  --radius-01: 0.5rem;
+  --radius-02: 1rem;
+
+  /* Breakpoints */
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+
+  /* Transitions */
+  --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

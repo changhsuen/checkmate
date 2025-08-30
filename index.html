@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkmate - 完美出遊準備工具</title>
+    <meta name="description" content="智能出遊準備清單，支援多人即時協作。讓每次旅行都完美準備、零遺漏。" />
+
+    <link rel="stylesheet" href="css/token.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="icon" href="icons/tent.png" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- 房間選擇界面 -->
+      <div class="room-selection" id="room-selection" style="display: none">
+        <h1>Checkmate</h1>
+        <p>選擇一個選項開始：</p>
+
+        <button class="room-btn" id="create-room-btn">
+          <span class="btn-icon">🎯</span>
+          <div>
+            <div class="btn-title">建立新活動</div>
+            <div class="btn-desc">設定你的出遊活動</div>
+          </div>
+        </button>
+
+        <div class="join-section">
+          <input type="text" placeholder="輸入房間 ID 或貼上連結" id="room-input" />
+          <button class="room-btn" id="join-room-btn">
+            <span class="btn-icon">🚪</span>
+            <div>
+              <div class="btn-title">加入活動</div>
+              <div class="btn-desc">使用邀請連結參與</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- 主要內容 -->
+      <div class="main-content" id="main-content">
+        <header class="header">
+          <h1 class="title">Trip</h1>
+          <div class="year">2025</div>
+          <button class="admin-btn" id="admin-btn" style="display: none">⚙️</button>
+        </header>
+
+        <div class="quick-links">
+          <button class="link-btn" id="share-btn">📤 分享活動</button>
+        </div>
+
+        <div class="countdown-card">
+          <div class="countdown-date" id="countdown-date">March 15th-16th, 2025</div>
+          <div class="countdown-display">
+            <div class="countdown-item">
+              <div class="countdown-number" id="days">03</div>
+              <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+              <div class="countdown-number" id="hours">13</div>
+              <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+              <div class="countdown-number" id="minutes">30</div>
+              <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+              <div class="countdown-number" id="seconds">58</div>
+              <div class="countdown-label">Seconds</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="schedule-section">
+          <div class="schedule-card">
+            <h2 class="section-title">Schedule</h2>
+            <div class="schedule-content" id="schedule-content">
+              <div class="empty-state">No Schedule yet</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="packing-section">
+          <h2 class="section-title">Packing list</h2>
+          <div class="progress-text" id="progress-text">0/0 Packed</div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <div class="filter-buttons" id="person-filter">
+            <button class="filter-btn active" data-person="all">All</button>
+          </div>
+
+          <div class="category-section">
+            <h3 class="category-title">Shared Gear</h3>
+            <ul class="item-list" id="shared-items"></ul>
+          </div>
+
+          <div class="category-section">
+            <h3 class="category-title">Personal Gear</h3>
+            <ul class="item-list" id="personal-items"></ul>
+          </div>
+
+          <div class="add-item-section">
+            <div class="add-item-form">
+              <select class="form-select" id="category-select">
+                <option value="Personal Gear">Personal Gear</option>
+                <option value="Shared Gear">Shared Gear</option>
+              </select>
+
+              <div class="form-row-horizontal">
+                <input type="text" class="form-input item-input" id="new-item-name" placeholder="Item" />
+                <input type="text" class="form-input number-input" id="new-item-quantity" placeholder="Number" />
+              </div>
+
+              <input type="text" class="form-input" id="new-item-person" placeholder="Name, Name, Name" />
+
+              <button class="add-btn" id="add-unified-item">Add Item</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="firebase-config.js"></script>
+    <script src="js/room-manager.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script src="js/countdown.js"></script>
+  </body>
+</html>

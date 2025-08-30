@@ -1,0 +1,71 @@
+/* ================================
+   Camping 2025 - 簡單區塊淡入動畫
+   ================================ */
+
+/* 標題區塊 */
+.header {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.2s forwards;
+}
+
+/* 快速連結 */
+.quick-links {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.4s forwards;
+}
+
+/* 倒數計時卡片 */
+.countdown-card {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.6s forwards;
+}
+
+/* 行程區塊 */
+.schedule-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 0.8s forwards;
+}
+
+/* 天氣區塊 */
+.weather-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 1s forwards;
+}
+
+/* 打包清單區塊 */
+.packing-section {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease-out 1.2s forwards;
+}
+
+/* 淡入動畫 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 尊重用戶的動畫偏好設定 */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .quick-links,
+  .countdown-card,
+  .schedule-section,
+  .weather-section,
+  .packing-section {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

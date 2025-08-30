@@ -1,0 +1,616 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-en);
+  background-color: var(--white);
+  color: var(--text-primary);
+}
+
+.container {
+  max-width: 414px;
+  margin: 0 auto;
+  padding: var(--spacing-05);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--background);
+}
+
+/* Header */
+header {
+  margin-bottom: var(--spacing-05);
+  padding: var(--spacing-05) 0;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.year {
+  font-size: 32px;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+/* Quick Links */
+.quick-links {
+  background-color: var(--layer-01);
+  padding: var(--spacing-03);
+  border-radius: 20px;
+  margin-bottom: var(--spacing-03);
+  display: flex;
+  gap: var(--spacing-02);
+  flex-wrap: wrap;
+}
+
+.link-btn {
+  background: var(--layer-02);
+  color: var(--text-primary);
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 20px;
+  text-decoration: underline;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.link-btn:hover {
+  background: var(--layer-02-hover);
+}
+
+/* Countdown Card */
+.countdown-card {
+  background: var(--beige50);
+  color: var(--text-primary);
+  padding: var(--spacing-05);
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: var(--spacing-03);
+}
+
+.countdown-date {
+  font-size: 16px;
+  margin-bottom: var(--spacing-03);
+}
+
+.countdown-display {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.countdown-item {
+  text-align: center;
+  width: 80px;
+}
+
+.countdown-number {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: var(--spacing-03);
+}
+
+.countdown-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Schedule Section */
+.schedule-section {
+  margin-bottom: var(--spacing-03);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.schedule-card {
+  background: var(--green50);
+  color: var(--text-primary);
+  padding: var(--spacing-05);
+  border-radius: 20px;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--spacing-03);
+}
+
+.schedule-item:last-child {
+  margin-bottom: 0;
+}
+
+.schedule-time {
+  width: 48px;
+  font-size: 14px;
+}
+
+.schedule-activity {
+  font-size: 14px;
+  margin-left: 16px;
+}
+
+/* Weather Section */
+.weather-section {
+  display: flex;
+  gap: var(--spacing-03);
+  margin-bottom: var(--spacing-03);
+}
+
+.weather-card {
+  flex: 1;
+  background: var(--green20);
+  padding: 16px;
+  border-radius: 20px;
+}
+
+.weather-date {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.iconandtemp {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rain {
+  display: flexbox;
+}
+
+.weather-humidity {
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.weather-temps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: end;
+  gap: 8px;
+}
+
+.temp-high {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.temp-low {
+  font-size: 24px;
+  color: var(--text-secondary);
+}
+
+/* Packing Section */
+.packing-section {
+  background-color: var(--layer-01);
+  border-radius: 20px;
+  padding: var(--spacing-05);
+}
+
+.packing-section h2 {
+  color: var(--text-primary);
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-03);
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--grey30);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--grey100);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* Filter Buttons */
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-02);
+  margin-bottom: var(--spacing-05);
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 20px;
+  border: 1px solid var(--button-primary);
+  background: transparent;
+  color: var(--button-primary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 70ms cubic-bezier(0, 0, 0.38, 0.9);
+}
+
+.filter-btn.active {
+  background: var(--button-primary);
+  color: white;
+  border-color: var(--button-primary);
+}
+
+.filter-btn:hover {
+  background: var(--background-hover);
+}
+
+.filter-btn.active:hover {
+  background: var(--button-primary-hover);
+}
+
+/* Category Section */
+.category-section {
+  margin-bottom: var(--spacing-05);
+}
+
+.category-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: var(--spacing-03);
+  color: var(--text-primary);
+}
+
+.item-list {
+  list-style: none;
+}
+
+/* Items */
+.item {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item.hidden {
+  display: none;
+}
+
+/* Custom Checkbox */
+.custom-checkbox {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.checkbox-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: 1px solid var(--green100);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkbox-label {
+  background-color: var(--green100);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M8 12.5L11 15.5L16 9.5' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+/* Status Indicators */
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: var(--spacing-03);
+  flex-shrink: 0;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+/* Status Colors */
+.status-none .status-indicator {
+  background-color: var(--status-red);
+}
+
+.status-partial .status-indicator {
+  background-color: var(--status-yellow);
+}
+
+.status-complete .status-indicator {
+  background-color: var(--status-green);
+}
+
+/* Item Label */
+.item-label {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+/* All 頁面的項目標籤不可點擊 */
+.status-container ~ .item-label {
+  cursor: default;
+}
+
+.item-name {
+  font-size: 14px;
+  color: #1f2937;
+  flex: 1;
+}
+
+.checked .item-name {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.item-quantity {
+  margin-left: var(--spacing-02);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.person-tags {
+  display: flex;
+  gap: var(--spacing-02);
+  margin-left: var(--spacing-02);
+}
+
+.person-tag {
+  height: 18px;
+  background: var(--layer-02);
+  color: var(--text-primary);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.delete-btn {
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-radius: 50%;
+  border: none;
+  color: var(--icon-secondary);
+  font-size: 18px;
+  padding: 0;
+  margin-left: var(--spacing-02);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  background-color: var(--background-hover);
+  color: var(--icon-primary);
+}
+
+/* Add Item Section */
+.add-item-section {
+  margin-top: 16px;
+}
+
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.add-item-form.hidden {
+  display: none !important;
+}
+
+/* Item 和 Number 的橫向佈局 */
+.form-row-horizontal {
+  display: flex;
+  gap: var(--spacing-02);
+  width: 100%;
+}
+
+/* 基本輸入框樣式 */
+.form-input {
+  height: 48px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  background: var(--field);
+  border: 1px solid transparent;
+  width: 100%; /* 預設所有輸入框都 100% fill */
+}
+
+.form-input:focus {
+  outline: none;
+  border: 1px solid var(--button-primary);
+}
+
+/* Item input - 自動填滿剩餘空間 */
+.form-input.item-input {
+  flex: 1;
+  min-width: 0; /* 防止 flex item 超出容器 */
+}
+
+/* Number input - 固定寬度 120px */
+.form-input.number-input {
+  width: 120px;
+  flex-shrink: 0; /* 防止被壓縮 */
+}
+
+/* Select 下拉選單 - 100% fill */
+.form-select {
+  height: 48px;
+  padding: var(--spacing-03) var(--spacing-07) var(--spacing-03) var(--spacing-05);
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  background: var(--field);
+  cursor: pointer;
+  border: 1px solid transparent;
+  width: 100%; /* 確保 select 也是 100% fill */
+}
+
+.form-select:focus {
+  outline: none;
+  border: 1px solid var(--button-primary);
+}
+
+/* Add Item Button */
+.add-btn {
+  background: var(--button-primary);
+  height: 48px;
+  color: var(--text-on-color);
+  padding: 0 16px;
+  border: none;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 70ms cubic-bezier(0, 0, 0.38, 0.9);
+  margin-bottom: var(--spacing-03);
+  width: 100%;
+}
+
+.add-btn:hover {
+  background: var(--button-primary-hover);
+}
+
+/* Remove Person Button */
+.remove-person-btn {
+  background: transparent;
+  color: var(--text-primary);
+  height: 48px;
+  border: 1px solid var(--button-primary);
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s ease;
+  margin-top: var(--spacing-05);
+}
+
+.remove-person-btn:hover {
+  background: var(--button-primary);
+  color: var(--text-on-color);
+}
+
+/* Save Button */
+.save-btn {
+  background: var(--button-primary);
+  color: var(--text-on-color);
+  height: 40px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  width: calc(100%);
+  transition: background 70ms cubic-bezier(0, 0, 0.38, 0.9);
+}
+
+.save-btn:hover {
+  background: var(--button-primary-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .save-btn {
+    width: calc(100%);
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-select {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 360px) {
+  .filter-buttons {
+    gap: 6px;
+  }
+
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .countdown-display {
+    gap: 12px;
+  }
+
+  .countdown-number {
+    font-size: 24px;
+  }
+
+  /* 響應式設計 - 小螢幕優化 */
+  .form-row-horizontal {
+    gap: var(--spacing-02); /* 保持一致的間距 */
+  }
+
+  .form-input.number-input {
+    width: 100px; /* 小螢幕時稍微縮小 */
+  }
+}
