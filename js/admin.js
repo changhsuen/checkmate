@@ -255,6 +255,10 @@ class AdminSystem {
         this.saveTitleSettings();
       }
 
+      if (e.target.matches('[data-action="save-map"]')) {
+        this.saveMapSettings();
+      }
+
       if (e.target.matches('[data-action="save-dates"]')) {
         this.saveDateSettings();
       }
@@ -288,6 +292,23 @@ class AdminSystem {
   // 設定儲存函數
   // ================================
 
+  saveMapSettings() {
+    const mapUrlInput = document.getElementById("map-url-input");
+    const mapTextInput = document.getElementById("map-text-input");
+    
+    if (mapUrlInput && mapTextInput) {
+      this.settings.googleMapUrl = mapUrlInput.value;
+      this.settings.googleMapText = mapTextInput.value;
+      
+      this.updatePreview();
+      this.closeModal();
+      this.showNotification('Google Map link updated');
+      
+      // 立即儲存到 Firebase
+      this.saveToFirebase();
+    }
+  }
+
   saveTitleSettings() {
     const titleInput = document.getElementById("title-input");
     const subtitleInput = document.getElementById("subtitle-input");
@@ -298,7 +319,7 @@ class AdminSystem {
       
       this.updatePreview();
       this.closeModal();
-      this.showNotification('標題已更新');
+      this.showNotification('Title updated');
       
       // 立即儲存到 Firebase
       this.saveToFirebase();
@@ -370,11 +391,42 @@ class AdminSystem {
     if (titleEl) titleEl.textContent = this.settings.title;
     if (subtitleEl) subtitleEl.textContent = this.settings.subtitle;
     
+    // 更新連結區域
+    this.updateLinksPreview();
+    
     // 更新日期顯示
     this.updateDatePreview();
     
     // 更新行程預覽
     this.updateSchedulePreview();
+    
+    // 更新打包清單預覽
+    this.updatePackingPreview();
+  }
+
+  updateLinksPreview() {
+    const linksEl = document.querySelector('.preview-links');
+    if (!linksEl) return;
+    
+    if (this.settings.googleMapUrl && this.settings.googleMapUrl.trim()) {
+      linksEl.innerHTML = `
+        <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; text-align: center;">
+          <a href="${this.settings.googleMapUrl}" target="_blank" style="color: #1a1a1a; text-decoration: none; font-size: 14px;">
+            🗺️ ${this.settings.googleMapText || 'View Location'}
+          </a>
+        </div>
+      `;
+    } else {
+      linksEl.innerHTML = '<div class="empty-state">No links yet</div>';
+    }
+  }
+
+  updatePackingPreview() {
+    const packingEl = document.getElementById('packing-preview');
+    if (!packingEl) return;
+    
+    // 這裡可以顯示打包清單的摘要信息
+    packingEl.innerHTML = '<div class="empty-state">No items yet</div>';
   }
 
   updateDatePreview() {
