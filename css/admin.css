@@ -1,15 +1,83 @@
-/* 新增的管理介面樣式 */
+/* ================================
+   管理後台完整樣式 - 修復版
+   ================================ */
+
+/* 基本佈局 */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.admin-sidebar {
+  width: 350px;
+  background: #f8f9fa;
+  padding: 24px;
+  border-right: 1px solid #e9ecef;
+  overflow-y: auto;
+}
+
+.admin-preview {
+  flex: 1;
+  padding: 24px;
+  background: #ffffff;
+  overflow-y: auto;
+}
+
+/* 頭部區域 */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.publish-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.publish-btn:hover {
+  background: #218838;
+}
+
+.publish-btn:active {
+  transform: translateY(1px);
+}
+
+/* 分享連結區域 */
 .links-section {
   margin-bottom: 2rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .links-section h3 {
   margin: 0 0 1rem 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
+  color: #333;
 }
 
 .link-item {
@@ -17,106 +85,145 @@
   justify-content: space-between;
   align-items: center;
   margin: 0.75rem 0;
-  padding: 0.75rem;
-  background: white;
-  border-radius: 6px;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
   border: 1px solid #e9ecef;
 }
 
 .link-info strong {
   font-size: 14px;
+  font-weight: 600;
   color: #333;
+  display: block;
 }
 
 .link-info small {
-  color: #666;
+  color: #6c757d;
   font-size: 12px;
 }
 
 .copy-btn {
-  background: #28a745;
+  background: #007bff;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
+  transition: background 0.2s;
 }
 
 .copy-btn:hover {
-  background: #218838;
+  background: #0056b3;
+}
+
+/* 區塊列表 */
+.section-list {
+  margin-bottom: 24px;
 }
 
 .section-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background: #f8f9fa;
-  border-radius: 8px;
+  padding: 16px;
+  margin: 8px 0;
+  background: white;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.2s;
+  border: 1px solid #e9ecef;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .section-item:hover {
-  background: #e9ecef;
+  background: #f8f9fa;
+  border-color: #007bff;
+  box-shadow: 0 2px 8px rgba(0,123,255,0.15);
 }
 
 .section-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 12px;
 }
 
 .section-icon {
-  font-size: 18px;
+  font-size: 22px;
+  width: 30px;
+  text-align: center;
 }
 
 .section-name {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 15px;
+  color: #333;
 }
 
 .section-toggle {
-  font-size: 16px;
-  opacity: 0.7;
+  font-size: 18px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.section-item:hover .section-toggle {
+  opacity: 1;
+}
+
+/* 預覽區域 */
+.admin-preview h2 {
+  margin: 0 0 24px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
 }
 
 .preview-phone {
   width: 375px;
   margin: 0 auto;
   background: white;
-  border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  min-height: 600px;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 8px solid #333;
+  position: relative;
+  min-height: 700px;
+}
+
+/* 預覽內容 */
+.preview-header {
+  text-align: center;
+  margin-bottom: 24px;
 }
 
 .preview-header h1 {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 700;
   margin: 0;
+  color: #333;
 }
 
 .preview-header div {
-  font-size: 32px;
+  font-size: 36px;
   color: #666;
   font-weight: 700;
 }
 
 .preview-countdown {
   background: #b4a587;
-  padding: 1rem;
+  padding: 20px;
   border-radius: 20px;
   text-align: center;
-  margin: 1rem 0;
+  margin: 20px 0;
+  color: white;
 }
 
 .countdown-date {
   font-size: 16px;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 
 .countdown-numbers {
@@ -127,44 +234,48 @@
 
 .countdown-item {
   text-align: center;
-  width: 80px;
+  flex: 1;
 }
 
 .countdown-item .number {
-  font-size: 40px;
-  font-weight: 500;
+  font-size: 32px;
+  font-weight: 600;
   line-height: 1;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
 }
 
 .countdown-item .label {
-  font-size: 14px;
-  color: #666;
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
 }
 
 .preview-schedule, .preview-packing {
-  margin: 1rem 0;
-  padding: 1rem;
+  margin: 20px 0;
+  padding: 20px;
   background: #929b8f;
   border-radius: 20px;
+  color: white;
 }
 
 .preview-schedule h3, .preview-packing h3 {
-  font-size: 18px;
-  font-weight: 500;
-  margin: 0 0 1rem 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
 }
 
 .schedule-item {
   display: flex;
   align-items: center;
-  margin: 0.5rem 0;
+  margin: 12px 0;
+  padding: 8px 0;
 }
 
 .schedule-item .time {
-  width: 48px;
+  width: 60px;
   font-size: 14px;
-  margin-right: 1rem;
+  font-weight: 600;
+  margin-right: 16px;
 }
 
 .schedule-item .activity {
@@ -172,212 +283,276 @@
 }
 
 .empty-state {
-  color: #666;
+  color: rgba(255,255,255,0.7);
   font-style: italic;
   text-align: center;
+  padding: 20px 0;
 }
 
-.notification {
+/* 彈出視窗樣式 */
+.modal-overlay {
   position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1000;
-  font-size: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* 新增的管理介面樣式 */
-.links-section {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-.links-section h3 {
-  margin: 0 0 1rem 0;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.link-item {
+.modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.75rem 0;
-  padding: 0.75rem;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #e9ecef;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e9ecef;
 }
 
-.link-info strong {
-  font-size: 14px;
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
   color: #333;
 }
 
-.link-info small {
-  color: #666;
-  font-size: 12px;
-}
-
-.copy-btn {
-  background: #28a745;
-  color: white;
+.modal-close {
+  background: none;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  font-size: 24px;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.copy-btn:hover {
-  background: #218838;
-}
-
-.section-item {
+  color: #666;
+  width: 30px;
+  height: 30px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  margin: 0.5rem 0;
-  background: #f8f9fa;
-  border-radius: 8px;
-  cursor: pointer;
+  justify-content: center;
+  border-radius: 50%;
   transition: background 0.2s;
 }
 
-.section-item:hover {
-  background: #e9ecef;
+.modal-close:hover {
+  background: #f8f9fa;
 }
 
-.section-info {
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e9ecef;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* 表單樣式 */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="datetime-local"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* 行程設定專用樣式 */
+.schedule-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.schedule-row input[type="time"] {
+  width: 120px;
+  padding: 8px 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.schedule-row input[type="text"] {
+  flex: 1;
+  padding: 8px 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.schedule-row input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  transition: background 0.2s;
 }
 
-.section-icon {
-  font-size: 18px;
+.remove-btn:hover {
+  background: #c82333;
 }
 
-.section-name {
+.add-schedule-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
   font-weight: 500;
+  width: 100%;
+  margin-top: 16px;
+  transition: background 0.2s;
+}
+
+.add-schedule-btn:hover {
+  background: #218838;
+}
+
+/* 儲存按鈕 */
+.save-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
   font-size: 14px;
-}
-
-.section-toggle {
-  font-size: 16px;
-  opacity: 0.7;
-}
-
-.preview-phone {
-  width: 375px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  min-height: 600px;
-}
-
-.preview-header h1 {
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.preview-header div {
-  font-size: 32px;
-  color: #666;
-  font-weight: 700;
-}
-
-.preview-countdown {
-  background: #b4a587;
-  padding: 1rem;
-  border-radius: 20px;
-  text-align: center;
-  margin: 1rem 0;
-}
-
-.countdown-date {
-  font-size: 16px;
-  margin-bottom: 1rem;
-}
-
-.countdown-numbers {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.countdown-item {
-  text-align: center;
-  width: 80px;
-}
-
-.countdown-item .number {
-  font-size: 40px;
   font-weight: 500;
-  line-height: 1;
-  margin-bottom: 0.5rem;
+  transition: background 0.2s;
 }
 
-.countdown-item .label {
-  font-size: 14px;
-  color: #666;
+.save-btn:hover {
+  background: #0056b3;
 }
 
-.preview-schedule, .preview-packing {
-  margin: 1rem 0;
-  padding: 1rem;
-  background: #929b8f;
-  border-radius: 20px;
-}
-
-.preview-schedule h3, .preview-packing h3 {
-  font-size: 18px;
-  font-weight: 500;
-  margin: 0 0 1rem 0;
-}
-
-.schedule-item {
-  display: flex;
-  align-items: center;
-  margin: 0.5rem 0;
-}
-
-.schedule-item .time {
-  width: 48px;
-  font-size: 14px;
-  margin-right: 1rem;
-}
-
-.schedule-item .activity {
-  font-size: 14px;
-}
-
-.empty-state {
-  color: #666;
-  font-style: italic;
-  text-align: center;
-}
-
+/* 通知樣式 */
 .notification {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: #4CAF50;
+  background: #28a745;
   color: white;
-  padding: 12px 20px;
+  padding: 16px 24px;
   border-radius: 8px;
-  z-index: 1000;
+  z-index: 1001;
   font-size: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .admin-container {
+    flex-direction: column;
+  }
+  
+  .admin-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .preview-phone {
+    width: 100%;
+    max-width: 375px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .admin-header h1 {
+    text-align: center;
+  }
+  
+  .links-section {
+    padding: 1rem;
+  }
+  
+  .link-item {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+  
+  .copy-btn {
+    width: 100%;
+  }
+  
+  .countdown-numbers {
+    gap: 8px;
+  }
+  
+  .countdown-item .number {
+    font-size: 24px;
+  }
+  
+  .schedule-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .schedule-row input[type="time"] {
+    width: 100%;
+  }
 }
