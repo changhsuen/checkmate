@@ -1,5 +1,5 @@
 /* ================================
-   現代化管理後台樣式
+   現代化管理後台樣式 - 修正版
    ================================ */
 
 * {
@@ -168,7 +168,7 @@ body {
 }
 
 /* ================================
-   中間區域 - Packing list
+   中間區域 - 編輯面板
    ================================ */
 
 .admin-middle {
@@ -193,13 +193,24 @@ body {
   color: #1a1a1a;
 }
 
-/* 表單區域 */
+/* ================================
+   表單樣式
+   ================================ */
+
 .form-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .form-row {
   margin-bottom: 16px;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #1a1a1a;
+  font-size: 14px;
 }
 
 .form-row-horizontal {
@@ -208,7 +219,8 @@ body {
   margin-bottom: 16px;
 }
 
-.form-select {
+.form-select,
+.form-input {
   width: 100%;
   padding: 14px 16px;
   border: none;
@@ -216,6 +228,11 @@ body {
   background: #f8f9fa;
   color: #1a1a1a;
   font-size: 14px;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.form-select {
   cursor: pointer;
   appearance: none;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
@@ -225,23 +242,8 @@ body {
   padding-right: 40px;
 }
 
+.form-input:focus,
 .form-select:focus {
-  outline: none;
-  background: white;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-}
-
-.form-input {
-  padding: 14px 16px;
-  border: none;
-  border-radius: 8px;
-  background: #f8f9fa;
-  color: #1a1a1a;
-  font-size: 14px;
-  transition: all 0.2s;
-}
-
-.form-input:focus {
   outline: none;
   background: white;
   box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
@@ -260,8 +262,14 @@ body {
   color: #9ca3af;
 }
 
-.add-btn {
-  width: 100%;
+/* ================================
+   按鈕樣式
+   ================================ */
+
+.add-btn,
+.add-link-btn,
+.add-day-btn,
+.add-activity-btn {
   background: #1a1a1a;
   color: white;
   border: none;
@@ -271,312 +279,40 @@ body {
   font-size: 14px;
   font-weight: 600;
   transition: all 0.2s;
-  margin-top: 8px;
+  width: 100%;
 }
 
-.add-btn:hover {
+.add-link-btn,
+.add-day-btn {
+  width: auto;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.add-btn:hover,
+.add-link-btn:hover,
+.add-day-btn:hover,
+.add-activity-btn:hover {
   background: #333;
   transform: translateY(-1px);
 }
 
-/* ================================
-   右側預覽區域
-   ================================ */
-
-.admin-preview {
-  flex: 1;
-  max-width: 400px;
-}
-
-.preview-phone {
-  background: #ffffff;
-  border-radius: 24px;
-  padding: 32px 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border: 1px solid #e5e5e5;
-  max-width: 375px;
-  margin: 0 auto;
-}
-
-/* 預覽頭部 */
-.preview-header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.preview-header h1 {
-  font-size: 36px;
-  font-weight: 800;
-  color: #1a1a1a;
-  margin: 0;
-  line-height: 1;
-}
-
-.preview-header div {
-  font-size: 36px;
-  font-weight: 800;
-  color: #666;
-  line-height: 1;
-}
-
-/* 倒數計時卡片 */
-.preview-countdown {
-  background: #b4a587;
-  color: white;
-  padding: 24px;
-  border-radius: 16px;
-  text-align: center;
-  margin: 24px 0;
-}
-
-.countdown-date {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 20px;
-  opacity: 0.9;
-}
-
-.countdown-numbers {
-  display: flex;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.countdown-item {
-  flex: 1;
-  text-align: center;
-}
-
-.countdown-item .number {
-  font-size: 36px;
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 4px;
-}
-
-.countdown-item .label {
-  font-size: 12px;
-  font-weight: 500;
-  opacity: 0.8;
-}
-
-/* Schedule 區域 */
-.preview-schedule {
-  background: #929b8f;
-  color: white;
-  padding: 20px;
-  border-radius: 16px;
-  margin: 16px 0;
-}
-
-.preview-schedule h3 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 16px 0;
-}
-
-.schedule-item {
-  display: flex;
-  align-items: center;
-  margin: 12px 0;
-  padding: 8px 0;
-}
-
-.schedule-item .time {
-  width: 60px;
-  font-size: 14px;
-  font-weight: 600;
-  margin-right: 16px;
-}
-
-.schedule-item .activity {
-  font-size: 14px;
-}
-
-/* Packing list 區域 */
-.preview-packing {
-  margin-top: 16px;
-}
-
-.preview-packing h3 {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 16px 0;
-  color: #1a1a1a;
-}
-
-.preview-packing-content {
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 12px;
-  color: #666;
-  text-align: center;
-  font-style: italic;
-}
-
-/* Empty states */
-.empty-state {
-  color: rgba(255, 255, 255, 0.7);
-  font-style: italic;
-  text-align: center;
-  padding: 16px 0;
-  font-size: 14px;
-}
-
-.preview-packing .empty-state {
-  color: #666;
-  background: #f8f9fa;
-  padding: 20px;
-  border-radius: 12px;
-}
-
-/* ================================
-   Modal 樣式
-   ================================ */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  backdrop-filter: blur(4px);
-}
-
-.modal-content {
-  background: white;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 540px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 32px 16px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.modal-header h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #666;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.modal-close:hover {
-  background: #f5f5f5;
-  color: #1a1a1a;
-}
-
-.modal-body {
-  padding: 24px 32px;
-}
-
-.modal-footer {
-  padding: 16px 32px 24px;
-  border-top: 1px solid #f0f0f0;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* 表單群組 */
-.form-group {
-  margin-bottom: 24px;
-}
-
-.form-group:last-child {
-  margin-bottom: 0;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #1a1a1a;
-  font-size: 14px;
-}
-
-.form-group input[type="text"],
-.form-group input[type="datetime-local"] {
-  width: 100%;
-  padding: 12px 16px;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  font-size: 14px;
-  transition: all 0.2s;
-  box-sizing: border-box;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
-}
-
-/* Schedule 特殊樣式 */
-.schedule-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 16px;
-  background: #f8f9fa;
-  border-radius: 8px;
-}
-
-.schedule-row input[type="time"] {
-  width: 140px;
-  padding: 8px 12px;
-  border: 2px solid #e5e5e5;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.schedule-row input[type="text"] {
-  flex: 1;
-  padding: 8px 12px;
-  border: 2px solid #e5e5e5;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.schedule-row input:focus {
-  outline: none;
-  border-color: #4299e1;
-}
-
-.remove-btn {
+.remove-btn,
+.remove-link-btn,
+.remove-day-btn,
+.remove-activity-btn {
   background: #ef4444;
   color: white;
   border: none;
   width: 32px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: 50%;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
@@ -587,122 +323,84 @@ body {
   flex-shrink: 0;
 }
 
-.remove-btn:hover {
+.remove-btn:hover,
+.remove-link-btn:hover,
+.remove-day-btn:hover,
+.remove-activity-btn:hover {
   background: #dc2626;
 }
 
-.add-schedule-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-  padding: 12px 20px;
+/* ================================
+   Google Map Links 樣式
+   ================================ */
+
+.map-link-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f8f9fa;
   border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  width: 100%;
-  margin-top: 16px;
-  transition: all 0.2s;
+  position: relative;
 }
 
-.add-schedule-btn:hover {
-  background: #059669;
-}
-
-/* 儲存按鈕 */
-.save-btn {
-  background: #1a1a1a;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.save-btn:hover {
-  background: #333;
-  transform: translateY(-1px);
+.map-link-row .remove-link-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 
 /* ================================
-   分享連結區域
+   Schedule 樣式
    ================================ */
 
-.links-section {
+.schedule-day {
   margin-bottom: 24px;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
 }
 
-.links-section h3 {
-  margin: 0 0 16px 0;
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.day-header h4 {
+  margin: 0;
   font-size: 16px;
   font-weight: 600;
   color: #1a1a1a;
 }
 
-.link-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 12px 0;
+.day-activities {
   padding: 16px;
-  background: white;
+}
+
+.schedule-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: #f8f9fa;
   border-radius: 8px;
-  border: 1px solid #e5e5e5;
 }
 
-.link-info strong {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a1a;
-  display: block;
+.schedule-row input[type="time"] {
+  width: 140px;
+  flex-shrink: 0;
 }
 
-.link-info small {
-  color: #666;
-  font-size: 12px;
-}
-
-.copy-btn {
-  background: #3b82f6;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all 0.2s;
-}
-
-.copy-btn:hover {
-  background: #2563eb;
-}
-
-/* ================================
-   通知系統
-   ================================ */
-
-.notification {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: #10b981;
-  color: white;
-  padding: 16px 24px;
-  border-radius: 12px;
-  z-index: 1001;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  max-width: 380px;
-  backdrop-filter: blur(8px);
+.schedule-row input[type="text"] {
+  flex: 1;
+  min-width: 0;
 }
 
 /* ================================
@@ -716,7 +414,7 @@ body {
   gap: 8px;
 }
 
-.person-tags-section .person-tag {
+.person-tag {
   background: #f8f9fa;
   color: #1a1a1a;
   padding: 8px 16px;
@@ -728,11 +426,11 @@ body {
   border: 2px solid transparent;
 }
 
-.person-tags-section .person-tag:hover {
+.person-tag:hover {
   background: #e9ecef;
 }
 
-.person-tags-section .person-tag.active {
+.person-tag.active {
   background: #1a1a1a;
   color: white;
 }
@@ -777,6 +475,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .item-name {
@@ -829,168 +528,48 @@ body {
 }
 
 /* ================================
-   Modal 進階功能樣式
+   右側預覽區域
    ================================ */
 
-.add-link-btn, .add-day-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.add-link-btn:hover, .add-day-btn:hover {
-  background: #059669;
-  transform: scale(1.1);
-}
-
-/* Google Map Links */
-.map-link-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-}
-
-.map-link-row input[type="text"] {
+.admin-preview {
   flex: 1;
-  padding: 8px 12px;
-  border: 2px solid #e5e5e5;
-  border-radius: 6px;
-  font-size: 14px;
-  min-width: 0;
+  max-width: 400px;
 }
 
-.map-link-row input[type="text"]:focus {
-  outline: none;
-  border-color: #4299e1;
-}
-
-.remove-link-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.remove-link-btn:hover {
-  background: #dc2626;
-}
-
-/* Schedule Days */
-.schedule-day {
-  margin-bottom: 24px;
+.preview-phone {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  overflow: hidden;
+  max-width: 375px;
+  margin: 0 auto;
 }
 
-.day-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e5e5e5;
+/* 預覽頭部 */
+.preview-header {
+  text-align: center;
+  margin-bottom: 24px;
 }
 
-.day-header h4 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+.preview-header h1 {
+  font-size: 36px;
+  font-weight: 800;
   color: #1a1a1a;
+  margin: 0;
+  line-height: 1;
 }
 
-.remove-day-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.preview-header div {
+  font-size: 36px;
+  font-weight: 800;
+  color: #666;
+  line-height: 1;
 }
 
-.day-activities {
-  padding: 16px;
-}
-
-.schedule-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-}
-
-.remove-activity-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.add-activity-btn {
-  background: #10b981;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  margin-top: 8px;
-}
-
-.add-activity-btn:hover {
-  background: #059669;
-}
-
-/* 預覽區域的行程樣式 */
-.schedule-day-preview {
-  margin-bottom: 16px;
-}
-
-.schedule-day-preview h4 {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: rgba(255,255,255,0.9);
+/* 連結預覽 */
+.preview-links {
+  margin: 16px 0;
 }
 
 .preview-link-item {
@@ -1001,7 +580,7 @@ body {
 }
 
 .preview-link-item a {
-  color: white;
+  color: #1a1a1a;
   text-decoration: none;
   font-size: 14px;
 }
@@ -1010,163 +589,194 @@ body {
   text-decoration: underline;
 }
 
+/* 倒數計時卡片 */
+.preview-countdown {
+  background: #b4a587;
+  color: white;
+  padding: 24px;
+  border-radius: 16px;
+  text-align: center;
+  margin: 24px 0;
+}
+
+.countdown-date {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.countdown-numbers {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.countdown-item {
+  flex: 1;
+  text-align: center;
+}
+
+.countdown-item .number {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.countdown-item .label {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+/* Schedule 預覽區域 */
+.preview-schedule {
+  background: #929b8f;
+  color: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin: 16px 0;
+}
+
+.preview-schedule h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+}
+
+.schedule-day-preview {
+  margin-bottom: 16px;
+}
+
+.schedule-day-preview:last-child {
+  margin-bottom: 0;
+}
+
+.schedule-day-preview h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: rgba(255,255,255,0.9);
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.schedule-item .time {
+  width: 60px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 16px;
+}
+
+.schedule-item .activity {
+  font-size: 14px;
+}
+
+/* Packing list 預覽區域 */
+.preview-packing {
+  margin-top: 16px;
+}
+
+.preview-packing h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #1a1a1a;
+}
+
+.preview-packing-content {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  color: #666;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Empty states */
+.empty-state {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+  font-size: 14px;
+}
+
+.preview-packing .empty-state,
+.preview-links .empty-state {
+  color: #666;
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+}
+
 /* ================================
-   分享 Modal 樣式
+   Modal 樣式
    ================================ */
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content,
 .share-modal-content {
   background: white;
   border-radius: 16px;
   width: 90%;
-  max-width: 500px;
-  overflow: hidden;
+  max-width: 540px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
 }
 
-.share-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 32px 16px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.share-header h3 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.share-body {
-  padding: 24px 32px;
-}
-
-.share-link-section {
-  margin-bottom: 24px;
-}
-
-.share-link-section:last-child {
-  margin-bottom: 0;
-}
-
-.share-link-section label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: #1a1a1a;
-  margin-bottom: 8px;
-}
-
-.share-link-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.share-link-row input[type="text"] {
-  flex: 1;
-  padding: 12px 16px;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #f8f9fa;
-  color: #666;
-}
-
-.share-link-row input[type="text"]:focus {
-  outline: none;
-  border-color: #4299e1;
-}
-
-.copy-link-btn {
-  background: #1a1a1a;
-  color: white;
+.modal-close {
+  background: none;
   border: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
+  font-size: 24px;
   cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 8px;
   transition: all 0.2s;
 }
 
-.copy-link-btn:hover {
-  background: #333;
-  transform: translateY(-1px);
-}
-
-.copy-link-btn svg {
-  width: 16px;
-  height: 16px;
+.modal-close:hover {
+  background: #f5f5f5;
+  color: #1a1a1a;
 }
 
 /* ================================
-   響應式設計
+   通知系統
    ================================ */
 
-@media (max-width: 1200px) {
-  .admin-container {
-    flex-direction: column;
-    gap: 16px;
-  }
-  
-  .admin-sidebar,
-  .admin-middle {
-    width: 100%;
-    max-width: none;
-  }
-  
-  .admin-preview {
-    max-width: none;
-  }
-  
-  .preview-phone {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .admin-container {
-    padding: 16px;
-  }
-  
-  .admin-sidebar,
-  .modal-content {
-    padding: 16px;
-  }
-  
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  
-  .countdown-numbers {
-    gap: 4px;
-  }
-  
-  .countdown-item .number {
-    font-size: 28px;
-  }
-  
-  .form-row-horizontal {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .form-input.number-input {
-    width: 100%;
-  }
-  
-  .schedule-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .schedule-row input[type="time"] {
-    width: 100%;
-  }
-}
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #10b981;
+  color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  z-index: 1001;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
