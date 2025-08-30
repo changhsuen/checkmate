@@ -74,30 +74,51 @@
           </div>
         </div>
         
-        <!-- 中間區域 - Packing list -->
-        <div class="admin-middle">
-          <div class="middle-header">
-            <h2 class="middle-title">Packaging list</h2>
-          </div>
-          
-          <div class="form-section">
-            <div class="form-row">
-              <select class="form-select" id="category-select">
-                <option value="Personal Gear">Personal Gear</option>
-                <option value="Shared Gear">Shared Gear</option>
-              </select>
+        <!-- 中間區域 - 內容會根據左側選擇的項目動態變化 -->
+        <div class="admin-middle" id="admin-middle">
+          <!-- 預設顯示 Packaging list -->
+          <div class="middle-content" id="middle-packaging">
+            <div class="middle-header">
+              <h2 class="middle-title">Packaging list</h2>
             </div>
             
-            <div class="form-row-horizontal">
-              <input type="text" class="form-input item-input" id="new-item-name" placeholder="Item" />
-              <input type="text" class="form-input number-input" id="new-item-quantity" placeholder="Number" />
+            <!-- 人員標籤 -->
+            <div class="person-tags-section" id="person-tags">
+              <div class="person-tag active" data-person="All">All</div>
             </div>
             
-            <div class="form-row">
-              <input type="text" class="form-input" id="new-item-person" placeholder="Name, Name, Name" />
+            <div class="form-section">
+              <div class="form-row">
+                <select class="form-select" id="category-select">
+                  <option value="Personal Gear">Personal Gear</option>
+                  <option value="Shared Gear">Shared Gear</option>
+                </select>
+              </div>
+              
+              <div class="form-row-horizontal">
+                <input type="text" class="form-input item-input" id="new-item-name" placeholder="Item" />
+                <input type="text" class="form-input number-input" id="new-item-quantity" placeholder="Number" />
+              </div>
+              
+              <div class="form-row">
+                <input type="text" class="form-input" id="new-item-person" placeholder="Name, Name, Name" />
+              </div>
+              
+              <button class="add-btn" id="add-unified-item">Add Item</button>
             </div>
-            
-            <button class="add-btn" id="add-unified-item">Add Item</button>
+
+            <!-- 物品清單顯示區域 -->
+            <div class="items-display-section">
+              <div class="category-section">
+                <h4>Shared Gear</h4>
+                <div class="items-list" id="shared-items-display"></div>
+              </div>
+              
+              <div class="category-section">
+                <h4>Personal Gear</h4>
+                <div class="items-list" id="personal-items-display"></div>
+              </div>
+            </div>
           </div>
         </div>
         
