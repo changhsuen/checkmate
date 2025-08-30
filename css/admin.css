@@ -189,3 +189,195 @@
   font-size: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
+
+/* 新增的管理介面樣式 */
+.links-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.links-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.link-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.link-info strong {
+  font-size: 14px;
+  color: #333;
+}
+
+.link-info small {
+  color: #666;
+  font-size: 12px;
+}
+
+.copy-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.copy-btn:hover {
+  background: #218838;
+}
+
+.section-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.section-item:hover {
+  background: #e9ecef;
+}
+
+.section-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-icon {
+  font-size: 18px;
+}
+
+.section-name {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.section-toggle {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.preview-phone {
+  width: 375px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-height: 600px;
+}
+
+.preview-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.preview-header div {
+  font-size: 32px;
+  color: #666;
+  font-weight: 700;
+}
+
+.preview-countdown {
+  background: #b4a587;
+  padding: 1rem;
+  border-radius: 20px;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.countdown-date {
+  font-size: 16px;
+  margin-bottom: 1rem;
+}
+
+.countdown-numbers {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.countdown-item {
+  text-align: center;
+  width: 80px;
+}
+
+.countdown-item .number {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+
+.countdown-item .label {
+  font-size: 14px;
+  color: #666;
+}
+
+.preview-schedule, .preview-packing {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #929b8f;
+  border-radius: 20px;
+}
+
+.preview-schedule h3, .preview-packing h3 {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+
+.schedule-item .time {
+  width: 48px;
+  font-size: 14px;
+  margin-right: 1rem;
+}
+
+.schedule-item .activity {
+  font-size: 14px;
+}
+
+.empty-state {
+  color: #666;
+  font-style: italic;
+  text-align: center;
+}
+
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
