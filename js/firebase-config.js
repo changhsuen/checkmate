@@ -24,7 +24,7 @@ const firebaseConfig = {
 const allowedDomains = [
   "localhost",
   "127.0.0.1",
-  "yourusername.github.io", // 替換為你的 GitHub 用戶名
+  "changhsuen.github.io", // 替換為你的 GitHub 用戶名
   "checkmate-80c76.web.app",
   "checkmate-80c76.firebaseapp.com",
 ];
