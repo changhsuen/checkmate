@@ -1,4 +1,4 @@
-// firebase-config.js - 請立即更換為新的 Firebase 專案配置
+// js/firebase-config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
   getDatabase,
@@ -10,25 +10,23 @@ import {
   off,
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-// ⚠️ 警告：這個配置已經暴露，請立即創建新的 Firebase 專案並更換配置
 const firebaseConfig = {
-  // 請更換為你的新 Firebase 專案配置
-  apiKey: "YOUR_NEW_API_KEY",
-  authDomain: "your-new-project.firebaseapp.com",
-  databaseURL: "https://your-new-project-default-rtdb.region.firebasedatabase.app",
-  projectId: "your-new-project",
-  storageBucket: "your-new-project.firebasestorage.app",
-  messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef123456789",
-  measurementId: "G-ABCDEF123456"
+  apiKey: "AIzaSyCxU1oul267oJxSDwp5pSYbQugx487eFHM",
+  authDomain: "checkmate-80c76.firebaseapp.com",
+  databaseURL: "https://checkmate-80c76-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "checkmate-80c76",
+  storageBucket: "checkmate-80c76.firebasestorage.app",
+  messagingSenderId: "214846552967",
+  appId: "1:214846552967:web:333c937ea54a828b80b122",
+  measurementId: "G-DK9DDYEH8H"
 };
 
 const allowedDomains = [
   "localhost",
   "127.0.0.1",
   "yourusername.github.io", // 替換為你的 GitHub 用戶名
-  "your-new-project.web.app",
-  "your-new-project.firebaseapp.com",
+  "checkmate-80c76.web.app",
+  "checkmate-80c76.firebaseapp.com",
 ];
 
 const currentDomain = window.location.hostname;
@@ -54,6 +52,5 @@ try {
   console.log("Firebase 初始化成功！");
 } catch (error) {
   console.error("Firebase 初始化錯誤:", error);
-  // 即使 Firebase 失敗也要發送事件，讓應用能以離線模式運行
   window.dispatchEvent(new Event("firebaseReady"));
 }
