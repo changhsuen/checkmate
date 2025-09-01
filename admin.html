@@ -74,9 +74,8 @@
           </div>
         </div>
         
-        <!-- 中間區域 - 編輯面板（動態內容） -->
+        <!-- 中間區域 - 編輯面板 -->
         <div class="admin-middle" id="admin-middle">
-          <!-- 初始內容 - 會被 JavaScript 動態替換 -->
           <div class="middle-content">
             <div class="middle-header">
               <h2 class="middle-title">Select a section</h2>
@@ -87,58 +86,63 @@
           </div>
         </div>
         
-        <!-- 右側預覽區域 -->
+        <!-- 右側預覽區域 - 與前台完全一致 -->
         <div class="admin-preview">
           <div class="preview-phone">
-            <div class="preview-content">
-              <!-- 預覽頭部 -->
-              <div class="preview-header">
-                <h1 id="preview-title">Trip</h1>
-                <div id="preview-subtitle">2025</div>
-              </div>
+            <div class="preview-content" style="max-width: 414px; margin: 0 auto; padding: 16px; min-height: 100vh; overflow-x: hidden; background-color: var(--background);">
               
-              <!-- 連結區域 -->
-              <div class="preview-links">
-                <div class="empty-state">Add a link on the left</div>
+              <!-- Header -->
+              <header class="header" style="margin-bottom: 16px; padding: 16px 0;">
+                <h1 class="title" id="preview-title" style="font-size: 32px; font-weight: 700;">Trip</h1>
+                <div class="year" id="preview-subtitle" style="font-size: 32px; color: var(--text-secondary); font-weight: 700; line-height: 1;">2025</div>
+              </header>
+
+              <!-- Quick Links -->
+              <div class="preview-links" id="preview-links">
+                <button class="link-btn" style="background: var(--layer-02); color: var(--text-primary); height: 40px; display: flex; justify-content: center; align-items: center; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500; border: none; margin-right: 8px; margin-bottom: 4px;">📤 分享活動</button>
               </div>
               
               <!-- 倒數計時 -->
-              <div class="preview-countdown">
-                <div class="countdown-date" id="preview-date">August 30, 2025</div>
-                <div class="countdown-numbers">
-                  <div class="countdown-item">
-                    <div class="number">03</div>
-                    <div class="label">Days</div>
+              <div class="preview-countdown" style="background: #b4a587; color: var(--text-primary); padding: 24px; border-radius: 20px; text-align: center; margin: 24px 0;">
+                <div class="countdown-date" id="preview-date" style="font-size: 16px; margin-bottom: 20px;">March 15th-16th, 2025</div>
+                <div class="countdown-numbers" style="display: flex; justify-content: space-between; gap: 16px;">
+                  <div class="countdown-item" style="text-align: center; width: 80px;">
+                    <div class="number" style="font-size: 40px; font-weight: 500; line-height: 1; margin-bottom: 8px;">03</div>
+                    <div class="label" style="font-size: 14px; color: var(--text-secondary);">Days</div>
                   </div>
-                  <div class="countdown-item">
-                    <div class="number">13</div>
-                    <div class="label">Hours</div>
+                  <div class="countdown-item" style="text-align: center; width: 80px;">
+                    <div class="number" style="font-size: 40px; font-weight: 500; line-height: 1; margin-bottom: 8px;">13</div>
+                    <div class="label" style="font-size: 14px; color: var(--text-secondary);">Hours</div>
                   </div>
-                  <div class="countdown-item">
-                    <div class="number">30</div>
-                    <div class="label">Minutes</div>
+                  <div class="countdown-item" style="text-align: center; width: 80px;">
+                    <div class="number" style="font-size: 40px; font-weight: 500; line-height: 1; margin-bottom: 8px;">30</div>
+                    <div class="label" style="font-size: 14px; color: var(--text-secondary);">Minutes</div>
                   </div>
-                  <div class="countdown-item">
-                    <div class="number">58</div>
-                    <div class="label">Seconds</div>
+                  <div class="countdown-item" style="text-align: center; width: 80px;">
+                    <div class="number" style="font-size: 40px; font-weight: 500; line-height: 1; margin-bottom: 8px;">58</div>
+                    <div class="label" style="font-size: 14px; color: var(--text-secondary);">Seconds</div>
                   </div>
                 </div>
               </div>
               
-              <!-- 行程區域 -->
-              <div class="preview-schedule">
-                <h3>Schedule</h3>
-                <div id="schedule-preview">
-                  <div class="empty-state">Add a schedule on the left</div>
+              <!-- Schedule 區域 -->
+              <div class="preview-schedule-section" style="margin-bottom: 16px;">
+                <div class="schedule-card" style="background: var(--green50); color: var(--text-primary); padding: 20px; border-radius: 20px;">
+                  <h2 class="section-title" style="font-size: 18px; font-weight: 500; margin-bottom: 16px;">Schedule</h2>
+                  <div class="schedule-content" id="schedule-preview">
+                    <div class="empty-state" style="color: rgba(255, 255, 255, 0.7); font-style: italic; text-align: center; padding: 16px 0; font-size: 14px;">No Schedule yet</div>
+                  </div>
                 </div>
               </div>
               
-              <!-- 打包清單區域 -->
-              <div class="preview-packing">
-                <h3>Packing list</h3>
-                <div id="packing-preview" class="preview-packing-content">
-                  <div class="empty-state">Add items on the left</div>
+              <!-- Packing list 區域 -->
+              <div class="preview-packing" id="packing-preview">
+                <h2 class="section-title" style="font-size: 18px; font-weight: 500; margin-bottom: 16px;">Packing list</h2>
+                <div class="progress-text">0/0 Packed</div>
+                <div class="progress-bar" style="height: 8px; background: var(--grey30); border-radius: 4px; overflow: hidden; margin-bottom: 20px;">
+                  <div class="progress-fill" style="height: 100%; background: var(--grey100); border-radius: 4px; width: 0%; transition: width 0.3s ease;"></div>
                 </div>
+                <div class="empty-state" style="color: #666; background: #f8f9fa; padding: 20px; border-radius: 12px; text-align: center; font-style: italic;">Add items on the left</div>
               </div>
             </div>
           </div>
