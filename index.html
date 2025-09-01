@@ -18,13 +18,15 @@
         <header class="header">
           <h1 class="title">Trip</h1>
           <div class="year">2025</div>
-          <button class="admin-btn" id="admin-btn" style="display: block;">⚙️</button>
+          <button class="admin-btn" id="admin-btn" style="position: absolute; top: 20px; right: 20px; background: #1a1a1a; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">⚙️</button>
         </header>
 
-        <div class="quick-links">
+        <!-- Quick Links - 會被動態更新 -->
+        <div class="quick-links" id="quick-links">
           <button class="link-btn" id="share-btn">📤 分享活動</button>
         </div>
 
+        <!-- 倒數計時 -->
         <div class="countdown-card">
           <div class="countdown-date" id="countdown-date">March 15th-16th, 2025</div>
           <div class="countdown-display">
@@ -47,6 +49,7 @@
           </div>
         </div>
 
+        <!-- Schedule Section -->
         <div class="schedule-section">
           <div class="schedule-card">
             <h2 class="section-title">Schedule</h2>
@@ -56,6 +59,7 @@
           </div>
         </div>
 
+        <!-- Packing List Section - 完整的 Camping2025 功能 -->
         <div class="packing-section">
           <h2 class="section-title">Packing list</h2>
           <div class="progress-text" id="progress-text">0/0 Packed</div>
@@ -63,20 +67,24 @@
             <div class="progress-fill" id="progress-fill"></div>
           </div>
 
+          <!-- 人員篩選按鈕 -->
           <div class="filter-buttons" id="person-filter">
             <button class="filter-btn active" data-person="all">All</button>
           </div>
 
+          <!-- Shared Gear 類別 -->
           <div class="category-section">
             <h3 class="category-title">Shared Gear</h3>
             <ul class="item-list" id="shared-items"></ul>
           </div>
 
+          <!-- Personal Gear 類別 -->
           <div class="category-section">
             <h3 class="category-title">Personal Gear</h3>
             <ul class="item-list" id="personal-items"></ul>
           </div>
 
+          <!-- 新增項目區域 -->
           <div class="add-item-section">
             <div class="add-item-form">
               <select class="form-select" id="category-select">
@@ -98,9 +106,10 @@
       </div>
     </div>
 
+    <!-- 載入所有腳本 -->
     <script type="module" src="js/firebase-config.js"></script>
-    <script src="js/room-manager.js"></script>
-    <script type="module" src="js/index-main.js"></script>
     <script src="js/countdown.js"></script>
+    <script type="module" src="js/index-main.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
