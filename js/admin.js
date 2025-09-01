@@ -1,4 +1,4 @@
-// js/admin.js - 完整修正版管理後台系統（按設計圖實作）
+// js/admin.js - 修復版：後台預覽與前台完全一致
 
 class AdminSystem {
   constructor() {
@@ -43,9 +43,9 @@ class AdminSystem {
   }
 
   init() {
-    console.log('🚀 管理系統初始化中...');
+    console.log('管理系統初始化中...');
     this.bindEvents();
-    this.updateMiddlePanel(); // 顯示預設的 packing list
+    this.updateMiddlePanel();
     this.updatePreview();
     this.waitForFirebase();
   }
@@ -53,11 +53,11 @@ class AdminSystem {
   waitForFirebase() {
     const checkFirebase = () => {
       if (typeof window.firebaseDB !== 'undefined') {
-        console.log('🔥 Firebase 連接成功！');
+        console.log('Firebase 連接成功！');
         this.firebaseReady = true;
         this.loadRoomData();
       } else {
-        console.log('⏳ 等待 Firebase...');
+        console.log('等待 Firebase...');
         setTimeout(checkFirebase, 500);
       }
     };
@@ -77,7 +77,7 @@ class AdminSystem {
       window.firebaseOnValue(settingsRef, (snapshot) => {
         const data = snapshot.val();
         if (data) {
-          console.log('📥 從 Firebase 載入設定:', data);
+          console.log('從 Firebase 載入設定:', data);
           this.settings = { ...this.settings, ...data };
           this.updatePreview();
           this.updateMiddlePanel();
@@ -86,7 +86,7 @@ class AdminSystem {
       });
       
     } catch (error) {
-      console.error('❌ 載入設定失敗:', error);
+      console.error('載入設定失敗:', error);
     }
   }
 
@@ -104,13 +104,12 @@ class AdminSystem {
       });
 
       await this.syncToMainApp();
-      console.log("✅ Settings saved to Firebase");
+      console.log("Settings saved to Firebase");
       
-      // 顯示分享連結彈窗
       this.showShareModal();
       
     } catch (error) {
-      console.error("❌ Failed to save settings:", error);
+      console.error("Failed to save settings:", error);
       this.showNotification('Save failed', 'error');
     }
   }
@@ -129,9 +128,9 @@ class AdminSystem {
         lastUpdated: new Date().toISOString()
       });
       
-      console.log('🔄 已同步設定到主應用程式');
+      console.log('已同步設定到主應用程式');
     } catch (error) {
-      console.error('❌ 同步失敗:', error);
+      console.error('同步失敗:', error);
     }
   }
 
@@ -147,7 +146,7 @@ class AdminSystem {
         this.switchTab(tab);
       }
 
-      // Section 點擊 - 切換中間面板內容
+      // Section 點擊
       if (e.target.matches(".section-item") || e.target.closest(".section-item")) {
         const section = e.target.dataset.section || e.target.closest(".section-item").dataset.section;
         this.currentSection = section;
@@ -176,7 +175,7 @@ class AdminSystem {
   }
 
   // ================================
-  // 中間面板內容管理（核心功能）
+  // 中間面板內容管理
   // ================================
 
   updateMiddlePanel() {
@@ -214,7 +213,7 @@ class AdminSystem {
   }
 
   // ================================
-  // 各個編輯器的 HTML 渲染
+  // 編輯器 HTML 渲染
   // ================================
 
   renderTitleEditor() {
@@ -280,7 +279,6 @@ class AdminSystem {
             <label>To</label>
             <input type="datetime-local" class="form-input" id="date-to" value="${this.settings.dateCountdown?.to || this.getDefaultDate()}">
           </div>
-          <p style="font-size: 12px; color: #666; margin-top: 8px;">預設為當天行程</p>
         </div>
       </div>
     `;
@@ -296,55 +294,6 @@ class AdminSystem {
         
         <div class="form-section" id="schedule-container">
           ${this.renderScheduleDays()}
-        </div>
-      </div>
-    `;
-  }
-
-  renderPackingListEditor() {
-    return `
-      <div class="middle-content">
-        <div class="middle-header">
-          <h2 class="middle-title">Packaging list</h2>
-        </div>
-        
-        <!-- 人員標籤區（在最上方） -->
-        <div class="person-tags-section" id="person-tags">
-          <div class="person-tag active" data-person="All">All</div>
-        </div>
-        
-        <!-- 新增工具區 -->
-        <div class="form-section">
-          <div class="form-row">
-            <select class="form-select" id="category-select">
-              <option value="Personal Gear">Personal Gear</option>
-              <option value="Shared Gear">Shared Gear</option>
-            </select>
-          </div>
-          
-          <div class="form-row-horizontal">
-            <input type="text" class="form-input item-input" id="new-item-name" placeholder="Item" />
-            <input type="text" class="form-input number-input" id="new-item-quantity" placeholder="Number" />
-          </div>
-          
-          <div class="form-row">
-            <input type="text" class="form-input" id="new-item-person" placeholder="Name, Name, Name" />
-          </div>
-          
-          <button class="add-btn" id="add-unified-item">Add Item</button>
-        </div>
-
-        <!-- 物品清單顯示區域（分類標題永遠顯示） -->
-        <div class="items-display-section">
-          <div class="category-section">
-            <h4>Shared Gear</h4>
-            <div class="items-list" id="shared-items-display"></div>
-          </div>
-          
-          <div class="category-section">
-            <h4>Personal Gear</h4>
-            <div class="items-list" id="personal-items-display"></div>
-          </div>
         </div>
       </div>
     `;
@@ -375,8 +324,54 @@ class AdminSystem {
     `).join('');
   }
 
+  renderPackingListEditor() {
+    return `
+      <div class="middle-content">
+        <div class="middle-header">
+          <h2 class="middle-title">Packaging list</h2>
+        </div>
+        
+        <div class="person-tags-section" id="person-tags">
+          <div class="person-tag active" data-person="All">All</div>
+        </div>
+        
+        <div class="form-section">
+          <div class="form-row">
+            <select class="form-select" id="category-select">
+              <option value="Personal Gear">Personal Gear</option>
+              <option value="Shared Gear">Shared Gear</option>
+            </select>
+          </div>
+          
+          <div class="form-row-horizontal">
+            <input type="text" class="form-input item-input" id="new-item-name" placeholder="Item" />
+            <input type="text" class="form-input number-input" id="new-item-quantity" placeholder="Number" />
+          </div>
+          
+          <div class="form-row">
+            <input type="text" class="form-input" id="new-item-person" placeholder="Name, Name, Name" />
+          </div>
+          
+          <button class="add-btn" id="add-unified-item">Add Item</button>
+        </div>
+
+        <div class="items-display-section">
+          <div class="category-section">
+            <h4>Shared Gear</h4>
+            <div class="items-list" id="shared-items-display"></div>
+          </div>
+          
+          <div class="category-section">
+            <h4>Personal Gear</h4>
+            <div class="items-list" id="personal-items-display"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   // ================================
-  // 各編輯器的事件處理
+  // 事件設置方法
   // ================================
 
   setupTitleEvents() {
@@ -401,7 +396,6 @@ class AdminSystem {
   setupGoogleMapEvents() {
     const container = document.getElementById('map-links-container');
     
-    // 新增連結
     const addBtn = document.getElementById('add-map-link');
     if (addBtn) {
       addBtn.addEventListener('click', () => {
@@ -411,7 +405,6 @@ class AdminSystem {
       });
     }
     
-    // 輸入監聽
     if (container) {
       container.addEventListener('input', (e) => {
         if (e.target.closest('.map-link-row')) {
@@ -426,7 +419,6 @@ class AdminSystem {
         }
       });
       
-      // 刪除按鈕
       container.addEventListener('click', (e) => {
         if (e.target.matches('.remove-link-btn')) {
           const index = parseInt(e.target.dataset.index);
@@ -462,7 +454,6 @@ class AdminSystem {
   setupScheduleEvents() {
     const container = document.getElementById('schedule-container');
     
-    // 新增天數
     const addDayBtn = document.getElementById('add-day');
     if (addDayBtn) {
       addDayBtn.addEventListener('click', () => {
@@ -477,7 +468,6 @@ class AdminSystem {
     
     if (container) {
       container.addEventListener('click', (e) => {
-        // 刪除天數
         if (e.target.matches('.remove-day-btn')) {
           const dayIndex = parseInt(e.target.dataset.dayIndex);
           this.settings.schedule.splice(dayIndex, 1);
@@ -485,7 +475,6 @@ class AdminSystem {
           this.updatePreview();
         }
         
-        // 新增活動
         if (e.target.matches('.add-activity-btn')) {
           const dayIndex = parseInt(e.target.dataset.dayIndex);
           if (!this.settings.schedule[dayIndex].activities) {
@@ -496,7 +485,6 @@ class AdminSystem {
           this.updatePreview();
         }
         
-        // 刪除活動
         if (e.target.matches('.remove-activity-btn')) {
           const dayIndex = parseInt(e.target.dataset.dayIndex);
           const actIndex = parseInt(e.target.dataset.activityIndex);
@@ -506,7 +494,6 @@ class AdminSystem {
         }
       });
       
-      // 活動輸入
       container.addEventListener('input', (e) => {
         if (e.target.closest('.schedule-row')) {
           const row = e.target.closest('.schedule-row');
@@ -524,7 +511,6 @@ class AdminSystem {
   }
 
   setupPackingListEvents() {
-    // 添加物品按鈕
     const addBtn = document.getElementById("add-unified-item");
     if (addBtn) {
       addBtn.replaceWith(addBtn.cloneNode(true));
@@ -533,7 +519,6 @@ class AdminSystem {
       });
     }
 
-    // Enter 鍵支援
     const inputs = document.querySelectorAll('.form-input');
     inputs.forEach((input) => {
       input.addEventListener("keypress", (e) => {
@@ -543,7 +528,6 @@ class AdminSystem {
       });
     });
 
-    // 人員標籤點擊和刪除物品
     document.addEventListener('click', (e) => {
       if (e.target.matches('.person-tag')) {
         document.querySelectorAll('.person-tag').forEach(tag => tag.classList.remove('active'));
@@ -558,7 +542,7 @@ class AdminSystem {
   }
 
   // ================================
-  // Packing List 功能實作
+  // Packing List 功能
   // ================================
 
   addPackingItem() {
@@ -594,18 +578,15 @@ class AdminSystem {
     }
     this.settings.packingItems[categoryId].unshift(newItem);
 
-    // 更新人員列表
     if (persons) {
       const personsList = persons.split(",").map(p => p.trim()).filter(p => p);
       personsList.forEach(person => this.allPersons.add(person));
     }
 
-    // 清空輸入欄位
     nameInput.value = "";
     if (quantityInput) quantityInput.value = "";
     if (personInput) personInput.value = "";
 
-    // 重新渲染
     this.renderPackingItems();
     this.updatePersonTags();
     this.updatePreview();
@@ -712,7 +693,7 @@ class AdminSystem {
   }
 
   // ================================
-  // 預覽更新
+  // 預覽更新 - 與前台完全一致
   // ================================
 
   updatePreview() {
@@ -735,21 +716,71 @@ class AdminSystem {
     const linksEl = document.querySelector('.preview-links');
     if (!linksEl) return;
     
+    // 清空並重新創建
+    linksEl.innerHTML = '';
+    
+    // 添加分享按鈕
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'link-btn';
+    shareBtn.innerHTML = '📤 分享活動';
+    shareBtn.style.cssText = `
+      background: var(--layer-02);
+      color: var(--text-primary);
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      margin-right: 8px;
+      margin-bottom: 4px;
+      cursor: pointer;
+    `;
+    linksEl.appendChild(shareBtn);
+    
+    // 添加 Google Map Links（去除圖標）
     if (this.settings.googleMapLinks && this.settings.googleMapLinks.length > 0) {
-      const validLinks = this.settings.googleMapLinks.filter(link => link.destination && link.url);
-      
-      if (validLinks.length > 0) {
-        linksEl.innerHTML = validLinks.map(link => 
-          `<div class="preview-link-item">
-            <a href="${link.url}" target="_blank">🗺️ ${link.destination}</a>
-          </div>`
-        ).join('');
-      } else {
-        linksEl.innerHTML = '<div class="empty-state">Add a link on the left</div>';
-      }
-    } else {
-      linksEl.innerHTML = '<div class="empty-state">Add a link on the left</div>';
+      this.settings.googleMapLinks.forEach(link => {
+        if (link.destination && link.url) {
+          const linkEl = document.createElement('a');
+          linkEl.className = 'link-btn';
+          linkEl.href = link.url;
+          linkEl.target = '_blank';
+          linkEl.textContent = link.destination; // 去除圖標
+          linkEl.style.cssText = `
+            background: var(--layer-02);
+            color: var(--text-primary);
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 4px;
+          `;
+          linksEl.appendChild(linkEl);
+        }
+      });
     }
+    
+    // 設置彈性布局
+    linksEl.style.cssText = `
+      background-color: var(--layer-01);
+      padding: var(--spacing-03);
+      border-radius: 20px;
+      margin-bottom: var(--spacing-03);
+      display: flex;
+      gap: var(--spacing-02);
+      flex-wrap: wrap;
+    `;
   }
 
   updateDatePreview() {
@@ -795,25 +826,24 @@ class AdminSystem {
     if (!scheduleEl) return;
     
     if (this.settings.schedule && this.settings.schedule.length > 0) {
-      const scheduleHTML = this.settings.schedule.map(day => {
-        if (!day.activities || day.activities.length === 0) return '';
-        
-        return `
-          <div class="schedule-day-preview">
-            <h4>${day.day || 'Day'}</h4>
-            ${day.activities.map(activity => `
-              <div class="schedule-item">
-                <span class="time">${activity.time}</span>
-                <span class="activity">${activity.activity}</span>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }).join('');
+      let scheduleHTML = '';
       
-      scheduleEl.innerHTML = scheduleHTML || '<div class="empty-state">Add a schedule on the left</div>';
+      this.settings.schedule.forEach(day => {
+        if (day.activities && day.activities.length > 0) {
+          day.activities.forEach(activity => {
+            scheduleHTML += `
+              <div class="schedule-item">
+                <div class="schedule-time">${activity.time}</div>
+                <div class="schedule-activity">${activity.activity}</div>
+              </div>
+            `;
+          });
+        }
+      });
+      
+      scheduleEl.innerHTML = scheduleHTML || '<div class="empty-state">No Schedule yet</div>';
     } else {
-      scheduleEl.innerHTML = '<div class="empty-state">Add a schedule on the left</div>';
+      scheduleEl.innerHTML = '<div class="empty-state">No Schedule yet</div>';
     }
   }
 
@@ -821,23 +851,128 @@ class AdminSystem {
     const packingEl = document.getElementById('packing-preview');
     if (!packingEl) return;
     
+    // 檢查是否有項目
     const hasItems = this.settings.packingItems && 
       (this.settings.packingItems['shared-items']?.length > 0 || 
        this.settings.packingItems['personal-items']?.length > 0);
     
+    let packingHTML = '';
+    
     if (hasItems) {
-      packingEl.innerHTML = '<div class="empty-state">Add items on the left</div>';
+      // 如果有項目，顯示完整的清單
+      packingHTML = `
+        <h2 class="section-title">Packing list</h2>
+        <div class="progress-text">0/0 Packed</div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 0%;"></div>
+        </div>
+        
+        <div class="filter-buttons">
+          <button class="filter-btn active">All</button>
+        </div>
+        
+        <div class="category-section">
+          <h3 class="category-title">Shared Gear</h3>
+          <ul class="item-list">
+            ${this.settings.packingItems['shared-items'] ? 
+              this.settings.packingItems['shared-items'].map(item => 
+                this.createPreviewItemHTML(item)
+              ).join('') : ''}
+          </ul>
+        </div>
+        
+        <div class="category-section">
+          <h3 class="category-title">Personal Gear</h3>
+          <ul class="item-list">
+            ${this.settings.packingItems['personal-items'] ? 
+              this.settings.packingItems['personal-items'].map(item => 
+                this.createPreviewItemHTML(item)
+              ).join('') : ''}
+          </ul>
+        </div>
+      `;
     } else {
-      packingEl.innerHTML = '<div class="empty-state">Add items on the left</div>';
+      // 如果沒有項目，顯示空狀態 - 與前台完全一致
+      packingHTML = `
+        <h2 class="section-title" style="font-size: 18px; font-weight: 500; margin-bottom: 16px; color: var(--text-primary);">Packing list</h2>
+        <div class="progress-text" style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">0/0 Packed</div>
+        <div class="progress-bar" style="height: 8px; background: var(--grey30); border-radius: 4px; overflow: hidden; margin-bottom: 20px;">
+          <div class="progress-fill" style="height: 100%; background: var(--grey100); border-radius: 4px; width: 0%; transition: width 0.3s ease;"></div>
+        </div>
+        
+        <div class="filter-buttons" style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 20px;">
+          <button class="filter-btn active" style="display: flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 20px; border: 1px solid var(--button-primary); background: var(--button-primary); color: white; font-size: 14px; cursor: pointer;">All</button>
+        </div>
+        
+        <div class="category-section" style="margin-bottom: 20px;">
+          <h3 class="category-title" style="font-size: 16px; font-weight: 500; margin-bottom: 12px; color: var(--text-primary);">Shared Gear</h3>
+          <ul class="item-list" style="list-style: none;"></ul>
+        </div>
+        
+        <div class="category-section" style="margin-bottom: 20px;">
+          <h3 class="category-title" style="font-size: 16px; font-weight: 500; margin-bottom: 12px; color: var(--text-primary);">Personal Gear</h3>
+          <ul class="item-list" style="list-style: none;"></ul>
+        </div>
+        
+        <div class="add-item-section" style="margin-top: 16px;">
+          <div class="add-item-form" style="display: flex; flex-direction: column; gap: 8px;">
+            <select class="form-select" style="height: 48px; padding: 8px 32px 8px 20px; border: none; border-radius: 24px; font-size: 14px; background: var(--field); cursor: pointer; border: 1px solid transparent; width: 100%;">
+              <option value="Personal Gear">Personal Gear</option>
+              <option value="Shared Gear">Shared Gear</option>
+            </select>
+            
+            <div class="form-row-horizontal" style="display: flex; gap: 8px; width: 100%;">
+              <input type="text" class="form-input item-input" placeholder="Item" style="height: 48px; padding: 8px 16px; border: none; border-radius: 24px; font-size: 14px; background: var(--field); border: 1px solid transparent; flex: 1; min-width: 0;" />
+              <input type="text" class="form-input number-input" placeholder="Number" style="height: 48px; padding: 8px 16px; border: none; border-radius: 24px; font-size: 14px; background: var(--field); border: 1px solid transparent; width: 120px; flex-shrink: 0;" />
+            </div>
+            
+            <input type="text" class="form-input" placeholder="Name, Name, Name" style="height: 48px; padding: 8px 16px; border: none; border-radius: 24px; font-size: 14px; background: var(--field); border: 1px solid transparent; width: 100%;" />
+            
+            <button class="add-btn" style="background: var(--button-primary); height: 48px; color: var(--text-on-color); padding: 0 16px; border: none; border-radius: 24px; font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; margin-bottom: 12px;">Add Item</button>
+          </div>
+        </div>
+      `;
     }
+    
+    packingEl.innerHTML = packingHTML;
+    
+    // 應用樣式使其與前台一致
+    packingEl.style.cssText = `
+      background-color: var(--layer-01);
+      border-radius: 20px;
+      padding: var(--spacing-05);
+      margin-top: 16px;
+    `;
+  }
+
+  createPreviewItemHTML(item) {
+    const personsList = item.persons ? item.persons.split(",").map(p => p.trim()) : [];
+    const personTags = personsList.map(person => 
+      `<span class="person-tag">${person}</span>`
+    ).join('');
+
+    return `
+      <li class="item" style="display: flex; align-items: center; height: 48px; border-bottom: 1px solid var(--border-subtle);">
+        <div class="custom-checkbox" style="position: relative; display: inline-block; width: 16px; height: 16px; margin-right: 12px; flex-shrink: 0;">
+          <input type="checkbox" style="opacity: 0; width: 0; height: 0; position: absolute;">
+          <label class="checkbox-label" style="position: absolute; top: 0; left: 0; width: 16px; height: 16px; background-color: transparent; border: 1px solid var(--green100); border-radius: 2px; cursor: pointer;"></label>
+        </div>
+        <label class="item-label" style="flex: 1; display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+          <span class="item-name" style="font-size: 14px; color: #1f2937; flex: 1;">${item.name}</span>
+          ${item.quantity ? `<span class="item-quantity" style="margin-left: var(--spacing-02); font-size: 12px; color: var(--text-primary);">x${item.quantity}</span>` : ''}
+          <span class="person-tags" style="display: flex; gap: var(--spacing-02); margin-left: var(--spacing-02);">
+            ${personTags}
+          </span>
+        </label>
+      </li>
+    `;
   }
 
   // ================================
-  // 分享連結功能（修正版）
+  // 分享連結功能
   // ================================
 
   showShareModal() {
-    // 創建彈窗 overlay
     let modalOverlay = document.getElementById('share-modal-overlay');
     if (!modalOverlay) {
       modalOverlay = document.createElement('div');
@@ -973,7 +1108,6 @@ class AdminSystem {
     
     modalOverlay.style.display = 'flex';
     
-    // 綁定事件
     modalOverlay.addEventListener('click', (e) => {
       if (e.target === modalOverlay || e.target.matches('.modal-close')) {
         modalOverlay.style.display = 'none';
@@ -1075,12 +1209,12 @@ let adminSystem;
 
 // DOM 載入完成後初始化
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('🎯 DOM 載入完成，等待 Firebase...');
+  console.log('DOM 載入完成，等待 Firebase...');
 });
 
 // 等待 Firebase 準備完成
 window.addEventListener('firebaseReady', function() {
-  console.log('🔥 Firebase 已準備完成，初始化管理系統');
+  console.log('Firebase 已準備完成，初始化管理系統');
   adminSystem = new AdminSystem();
 });
 
@@ -1089,4 +1223,4 @@ if (typeof window.firebaseDB !== 'undefined') {
   adminSystem = new AdminSystem();
 }
 
-console.log('📦 Complete Admin System 載入完成');
+console.log('Complete Admin System 載入完成');
