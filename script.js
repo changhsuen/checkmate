@@ -1,4 +1,4 @@
-// script.js - 專注即時線上同步的版本 - 修復版
+// script.js - 修復版：移除預設項目，保留完整功能
 let personCheckedItems = {};
 let isInitialLoad = true;
 let firebaseInitialized = false;
@@ -8,7 +8,7 @@ let firebaseInitialized = false;
 // ============================================
 
 document.addEventListener("DOMContentLoaded", function () {
-  console.log("🚀 應用程式啟動中...");
+  console.log("應用程式啟動中...");
 
   initializeBasicFunctions();
   setupEventDelegation();
@@ -24,15 +24,15 @@ function waitForFirebase() {
   const checkFirebase = () => {
     attempts++;
     if (typeof window.firebaseDB !== "undefined") {
-      console.log("🔥 Firebase 連接成功！");
+      console.log("Firebase 連接成功！");
       firebaseInitialized = true;
       initializeApp();
     } else if (attempts < maxAttempts) {
-      console.log(`⏳ 等待 Firebase... (${attempts}/${maxAttempts})`);
+      console.log(`等待 Firebase... (${attempts}/${maxAttempts})`);
       setTimeout(checkFirebase, 1000);
     } else {
-      console.log("❌ Firebase 連接失敗，載入預設資料");
-      loadDefaultItems(); // 離線模式
+      console.log("Firebase 連接失敗，載入空白清單");
+      loadEmptyItems(); // 修改：載入空清單而不是預設項目
     }
   };
 
@@ -83,7 +83,7 @@ function setupEventDelegation() {
     }
   });
 
-  // 新增：Remove Person 按鈕
+  // Remove Person 按鈕
   document.addEventListener("click", function (e) {
     if (e.target.classList.contains("remove-person-btn")) {
       e.preventDefault();
@@ -98,27 +98,23 @@ function setupEventDelegation() {
 
 function initializePersonCheckedItems() {
   personCheckedItems = { all: {} };
-  const defaultPersons = ["Milli", "Shawn", "Henry", "Peggy", "Jin", "Tee", "Alex", "All"];
-  defaultPersons.forEach((person) => {
-    personCheckedItems[person] = {};
-  });
+  // 不預設任何人員，只有基本的 all
 }
 
 // ============================================
-// Firebase 即時同步 - 核心功能（移除勾選提示）
+// Firebase 即時同步
 // ============================================
 
 function setupRealtimeListeners() {
   if (!firebaseInitialized) return;
 
-  console.log("👂 設置即時監聽器");
+  console.log("設置即時監聽器");
 
-  // 監聽勾選狀態變化 - 移除提示
+  // 監聽勾選狀態變化
   const checklistRef = window.firebaseRef("checklist");
   window.firebaseOnValue(checklistRef, (snapshot) => {
     const data = snapshot.val();
     if (data && data.personChecked) {
-      // 移除了這行: showUpdateNotification("有人更新了勾選狀態");
       updatePersonCheckedItems(data.personChecked);
       updateAllUIStates();
     }
@@ -130,7 +126,7 @@ function setupRealtimeListeners() {
     const data = snapshot.val();
     if (data && Object.keys(data).length > 0) {
       if (!isInitialLoad) {
-        console.log("📥 收到即時項目更新");
+        console.log("收到即時項目更新");
         showUpdateNotification("有人更新了項目清單");
       }
       renderItemsFromFirebase(data);
@@ -141,7 +137,7 @@ function setupRealtimeListeners() {
 function loadFromFirebase() {
   if (!firebaseInitialized) return;
 
-  console.log("📡 從 Firebase 載入初始資料");
+  console.log("從 Firebase 載入初始資料");
 
   // 載入項目
   const itemsRef = window.firebaseRef("items");
@@ -150,17 +146,17 @@ function loadFromFirebase() {
     (snapshot) => {
       const data = snapshot.val();
       if (data && Object.keys(data).length > 0) {
-        console.log("✅ 載入線上項目資料");
+        console.log("載入線上項目資料");
         renderItemsFromFirebase(data);
       } else {
-        console.log("📋 沒有線上資料，載入預設項目");
-        loadDefaultItems();
+        console.log("沒有線上資料，保持空清單");
+        loadEmptyItems(); // 修改：載入空清單
       }
 
       // 完成初始載入
       setTimeout(() => {
         isInitialLoad = false;
-        console.log("🎉 初始載入完成");
+        console.log("初始載入完成");
       }, 1000);
     },
     { once: true }
@@ -186,7 +182,7 @@ function updatePersonCheckedItems(firebaseData) {
 }
 
 function renderItemsFromFirebase(data) {
-  console.log("🎨 渲染 Firebase 項目資料");
+  console.log("渲染 Firebase 項目資料");
 
   // 清空現有項目
   document.querySelectorAll(".item-list").forEach((list) => {
@@ -201,7 +197,7 @@ function renderItemsFromFirebase(data) {
 
     const list = document.getElementById(categoryId);
     if (list && data[categoryId] && Array.isArray(data[categoryId])) {
-      console.log(`📝 渲染 ${data[categoryId].length} 個項目到 ${categoryId}`);
+      console.log(`渲染 ${data[categoryId].length} 個項目到 ${categoryId}`);
       data[categoryId].forEach((item) => {
         createItemElement(list, item);
       });
@@ -216,8 +212,8 @@ function updateAllUIStates() {
   updateStatusIndicators();
   updateProgress();
   createPersonFilters();
-  updateAddItemFormVisibility(); // 新增：控制表單顯示
-  updateRemovePersonButton(); // 新增：控制 Remove 按鈕
+  updateAddItemFormVisibility();
+  updateRemovePersonButton();
 }
 
 // ============================================
@@ -226,7 +222,7 @@ function updateAllUIStates() {
 
 function pushToFirebase(type, data) {
   if (!firebaseInitialized) {
-    console.log("⚠️ Firebase 未連接，無法同步");
+    console.log("Firebase 未連接，無法同步");
     return;
   }
 
@@ -257,9 +253,9 @@ function pushChecklistToFirebase() {
       updatedBy: getCurrentFilterPerson() || "unknown",
     });
 
-    console.log("📤 勾選狀態已推送到 Firebase");
+    console.log("勾選狀態已推送到 Firebase");
   } catch (error) {
-    console.error("❌ 推送勾選狀態失敗:", error);
+    console.error("推送勾選狀態失敗:", error);
   }
 }
 
@@ -274,14 +270,14 @@ function pushItemsToFirebase() {
       updatedBy: getCurrentFilterPerson() || "unknown",
     });
 
-    console.log("📤 項目清單已推送到 Firebase");
+    console.log("項目清單已推送到 Firebase");
   } catch (error) {
-    console.error("❌ 推送項目清單失敗:", error);
+    console.error("推送項目清單失敗:", error);
   }
 }
 
 // ============================================
-// 用戶操作處理 - 立即同步
+// 用戶操作處理
 // ============================================
 
 function handleCheckboxChange(checkbox) {
@@ -290,7 +286,7 @@ function handleCheckboxChange(checkbox) {
   const item = checkbox.closest(".item");
   const itemLabel = item.querySelector(".item-label");
 
-  console.log(`✅ ${currentPerson} ${checkbox.checked ? "勾選" : "取消"} ${itemId}`);
+  console.log(`${currentPerson} ${checkbox.checked ? "勾選" : "取消"} ${itemId}`);
 
   // 立即更新本地狀態
   if (checkbox.checked) {
@@ -321,7 +317,7 @@ function addUnifiedItem() {
   const personInput = document.getElementById("new-item-person");
 
   if (!categorySelect || !nameInput) {
-    console.error("❌ 找不到必需的輸入欄位");
+    console.error("找不到必需的輸入欄位");
     return;
   }
 
@@ -337,7 +333,7 @@ function addUnifiedItem() {
 
   let listId = category === "Shared Gear" ? "shared-items" : "personal-items";
 
-  console.log(`➕ 新增項目: ${name} 到 ${category}`);
+  console.log(`新增項目: ${name} 到 ${category}`);
 
   addNewItem(listId, name, quantity, persons);
 
@@ -350,7 +346,7 @@ function addUnifiedItem() {
 function addNewItem(listId, name, quantity, persons) {
   const list = document.getElementById(listId);
   if (!list) {
-    console.error(`❌ 找不到列表: ${listId}`);
+    console.error(`找不到列表: ${listId}`);
     return;
   }
 
@@ -388,7 +384,7 @@ function deleteItem(itemElement) {
     const itemId = itemElement.querySelector('input[type="checkbox"]')?.id;
     const itemName = itemElement.querySelector(".item-name")?.textContent;
 
-    console.log(`🗑️ 刪除項目: ${itemName}`);
+    console.log(`刪除項目: ${itemName}`);
 
     // 從勾選記錄中移除
     if (itemId) {
@@ -407,17 +403,13 @@ function deleteItem(itemElement) {
   }
 }
 
-// ============================================
-// 新功能：完全移除人員
-// ============================================
-
 function removePerson(personName) {
   if (
     confirm(
       `確定要完全移除 ${personName} 嗎？\n\n• 只由 ${personName} 負責的項目將被刪除\n• 多人負責的項目將移除 ${personName} 標籤\n• ${personName} 的所有勾選狀態將被清除`
     )
   ) {
-    console.log(`🗑️ 完全移除人員: ${personName}`);
+    console.log(`完全移除人員: ${personName}`);
 
     // 1. 清除該人員的勾選狀態
     if (personCheckedItems[personName]) {
@@ -437,17 +429,13 @@ function removePerson(personName) {
           .filter((p) => p);
 
         if (personsList.length === 1 && personsList[0] === personName) {
-          // 只有這個人負責 → 刪除整個項目
           itemsToRemove.push(item);
         } else if (personsList.includes(personName)) {
-          // 多人負責 → 只移除該人員標籤
           const newPersonsList = personsList.filter((p) => p !== personName);
           const newPersonsData = newPersonsList.join(",");
 
-          // 更新 dataset
           item.dataset.person = newPersonsData;
 
-          // 更新視覺標籤
           const personTags = item.querySelector(".person-tags");
           if (personTags) {
             personTags.innerHTML = "";
@@ -468,9 +456,8 @@ function removePerson(personName) {
     itemsToRemove.forEach((item) => {
       const itemId = item.querySelector('input[type="checkbox"]')?.id;
       const itemName = item.querySelector(".item-name")?.textContent;
-      console.log(`  🗑️ 刪除項目: ${itemName} (只由 ${personName} 負責)`);
+      console.log(`刪除項目: ${itemName} (只由 ${personName} 負責)`);
 
-      // 從所有人的勾選記錄中移除
       if (itemId) {
         for (let person in personCheckedItems) {
           delete personCheckedItems[person][itemId];
@@ -516,7 +503,6 @@ function removePerson(personName) {
 }
 
 function switchToAllPage() {
-  // 找到 All 按鈕並點擊
   const allButton = document.querySelector('[data-person="all"]');
   if (allButton) {
     allButton.click();
@@ -524,7 +510,7 @@ function switchToAllPage() {
 }
 
 // ============================================
-// UI 工具函數 - 修改版
+// UI 工具函數
 // ============================================
 
 function createItemElement(list, item) {
@@ -686,7 +672,7 @@ function createPersonFilters() {
     }
   });
 
-  // 設置當前活躍按鈕，如果原本的人員被移除了，就切換到 All
+  // 設置當前活躍按鈕
   const buttonToActivate = personFilter.querySelector(`[data-person="${currentPerson}"]`);
   if (buttonToActivate) {
     buttonToActivate.classList.add("active");
@@ -718,8 +704,8 @@ function setupFilterButtons() {
 
       switchViewMode(person);
       filterItems(person);
-      updateAddItemFormVisibility(); // 新增
-      updateRemovePersonButton(); // 新增
+      updateAddItemFormVisibility();
+      updateRemovePersonButton();
 
       if (person === "all") {
         updateStatusIndicators();
@@ -746,7 +732,6 @@ function switchViewMode(person) {
       if (itemLabel) {
         itemLabel.style.cursor = "default";
         itemLabel.removeAttribute("for");
-        // 關鍵修改：All 頁面不顯示刪除線
         itemLabel.classList.remove("checked");
       }
     } else {
@@ -760,10 +745,6 @@ function switchViewMode(person) {
     }
   });
 }
-
-// ============================================
-// 新功能：控制表單和按鈕顯示
-// ============================================
 
 function updateAddItemFormVisibility() {
   const addItemSection = document.querySelector(".add-item-section");
@@ -784,21 +765,17 @@ function updateAddItemFormVisibility() {
 function updateRemovePersonButton() {
   const currentPerson = getCurrentFilterPerson();
 
-  // 先移除現有的按鈕
   const existingBtn = document.querySelector(".remove-person-btn");
   if (existingBtn) {
     existingBtn.remove();
   }
 
-  // 如果不是 All 頁面，添加 Remove Person 按鈕
   if (currentPerson !== "all") {
     const addItemSection = document.querySelector(".add-item-section");
     if (addItemSection) {
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-person-btn";
       removeBtn.textContent = `Remove ${currentPerson}`;
-
-      // 移除所有內聯樣式，改用 CSS class
       addItemSection.appendChild(removeBtn);
     }
   }
@@ -868,7 +845,6 @@ function updateCheckboxStates() {
 
     checkbox.checked = isChecked;
 
-    // 只在非 All 頁面顯示刪除線
     if (getCurrentFilterPerson() !== "all") {
       if (isChecked) {
         itemLabel.classList.add("checked");
@@ -884,42 +860,19 @@ function updateAllCheckboxStates() {
 }
 
 // ============================================
-// 載入預設資料（Firebase 失敗時的備案）
+// 載入空清單（修改版）
 // ============================================
 
-function loadDefaultItems() {
-  console.log("📋 載入預設項目資料");
+function loadEmptyItems() {
+  console.log("載入空的 Packing List");
 
-  const defaultData = {
-    "shared-items": [
-      { id: "item-default-1", name: "Gas stove", quantity: "", persons: "Henry,Jin", personData: "Henry,Jin" },
-      { id: "item-default-2", name: "Cookware", quantity: "", persons: "Henry,Jin", personData: "Henry,Jin" },
-      { id: "item-default-3", name: "Seasoning", quantity: "", persons: "Henry", personData: "Henry" },
-      { id: "item-default-4", name: "Coffee gear", quantity: "", persons: "Milli", personData: "Milli" },
-      { id: "item-default-5", name: "Tissue", quantity: "", persons: "Peggy", personData: "Peggy" },
-      { id: "item-default-6", name: "Rag", quantity: "", persons: "Peggy", personData: "Peggy" },
-      { id: "item-default-7", name: "Ice bucket", quantity: "", persons: "Shawn", personData: "Shawn" },
-      { id: "item-default-8", name: "Shovel", quantity: "", persons: "Shawn", personData: "Shawn" },
-      { id: "item-default-9", name: "Dishwashing liquid", quantity: "", persons: "Tee", personData: "Tee" },
-      { id: "item-default-10", name: "Trash bag", quantity: "", persons: "Tee", personData: "Tee" },
-      { id: "item-default-11", name: "Extension cord", quantity: "", persons: "Alex", personData: "Alex" },
-    ],
-    "personal-items": [
-      { id: "item-default-12", name: "Sleeping bag", quantity: "", persons: "All", personData: "All" },
-      { id: "item-default-13", name: "Clothes", quantity: "", persons: "All", personData: "All" },
-      { id: "item-default-14", name: "Rain gear", quantity: "", persons: "All", personData: "All" },
-      { id: "item-default-15", name: "Toiletries", quantity: "", persons: "All", personData: "All" },
-      { id: "item-default-16", name: "Camera", quantity: "", persons: "Milli", personData: "Milli" },
-    ],
+  // 載入空的資料結構
+  const emptyData = {
+    "shared-items": [],
+    "personal-items": []
   };
 
-  renderItemsFromFirebase(defaultData);
-
-  // 推送預設資料到 Firebase
-  if (firebaseInitialized) {
-    console.log("📤 上傳預設資料到 Firebase");
-    pushToFirebase("items");
-  }
+  renderItemsFromFirebase(emptyData);
 
   setTimeout(() => {
     isInitialLoad = false;
@@ -984,12 +937,7 @@ function generateSafeId(prefix = "item") {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100)}`;
 }
 
-// ============================================
-// 更新通知
-// ============================================
-
 function showUpdateNotification(message) {
-  // 簡單的通知提示
   const notification = document.createElement("div");
   notification.style.cssText = `
     position: fixed;
@@ -1012,4 +960,8 @@ function showUpdateNotification(message) {
   }, 3000);
 }
 
-console.log("🚀 修復版本載入完成 - 基於原始正常代碼的最小修改");
+// 設置全域變數供外部使用
+window.renderItemsFromFirebase = renderItemsFromFirebase;
+window.packingInitialized = true;
+
+console.log("Packing List 載入完成 - 無預設項目版本");
